@@ -75,13 +75,13 @@ function addRune(categoryId, config) {
 // 2. DEFINE YOUR DATABASE (EDIT / ADD RUNES HERE)
 // ============================================================================
 
-// --- CATEGORIES ---
-registerCategory("basic", "Basic Set");
-registerCategory("cybernetic", "Cybernetic / Tech");
-registerCategory("sand", "Desert / Sand");
-registerCategory("fire", "Fire / Volcanic");
+// --- Categories ---
+registerCategory("basic", "Basic Rune");
+registerCategory("essential", "Essential Rune");
+registerCategory("desert", "Desert Rune");
+registerCategory("magma", "Magma Rune");
 
-// --- BASIC SET ---
+// --- Bbasic rune ---
 addRune("basic", { name: "COMMON", chance: 2, color: "white", buffs: ["Points 4x"] });
 addRune("basic", { name: "UNCOMMON", chance: 3, color: "green", buffs: ["Points 10x"] });
 addRune("basic", { name: "RARE", chance: 15, color: "blue", buffs: ["Flux 5x"] });
@@ -93,36 +93,36 @@ addRune("basic", { name: "EMPEROR", type: "Deity", chance: 500000000, luckOnChan
 addRune("basic", { name: "OVERLORD", type: "Deity", chance: 90.52e15, luckOnChance: 600e15, color: "pink", buffs: ["Points 1Kx", "Sacrifice Points 2.5x", "Rune Bulk 50x", "Tokens 4x"] });
 
 // --- CYBERNETIC SET ---
-addRune("cybernetic", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
-addRune("cybernetic", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
-addRune("cybernetic", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
-addRune("cybernetic", { name: "OVERCLOCKED", chance: 1000000, color: "red", buffs: ["Points 100x", "Particles 10x"] });
-addRune("cybernetic", { name: "NEURAL", chance: 200000000, color: "orange", buffs: ["Voltage 3x", "Plasma 4x"] });
-addRune("cybernetic", { name: "QUANTUM", chance: 500000000000, color: "pink", buffs: ["Particles 3x", "Rune Bulk 2x"] });
-addRune("cybernetic", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luckOnChance: 6e9, color: "green", buffs: ["Points 5Kx", "Plasma 5x", "Pulse Button 3x", "Sacrifice Points 2x"] });
-addRune("cybernetic", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
-addRune("cybernetic", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
+addRune("essential", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
+addRune("essential", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
+addRune("essential", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
+addRune("essential", { name: "OVERCLOCKED", chance: 1000000, color: "red", buffs: ["Points 100x", "Particles 10x"] });
+addRune("essential", { name: "NEURAL", chance: 200000000, color: "orange", buffs: ["Voltage 3x", "Plasma 4x"] });
+addRune("essential", { name: "QUANTUM", chance: 500000000000, color: "pink", buffs: ["Particles 3x", "Rune Bulk 2x"] });
+addRune("essential", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luckOnChance: 6e9, color: "green", buffs: ["Points 5Kx", "Plasma 5x", "Pulse Button 3x", "Sacrifice Points 2x"] });
+addRune("essential", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
+addRune("essential", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
 
-// --- DESERT / SAND SET ---
-addRune("sand", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
-addRune("sand", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
-addRune("sand", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
-addRune("sand", { name: "BRINE", chance: 200000000000000, color: "green", buffs: ["Cactus 25x", "Sand 2x", "Rune Luck 4x"] });
-addRune("sand", { name: "RUST", chance: 10000000000000000, color: "brown", buffs: ["Cactus 5x", "Sand 5x", "Rune Luck 5x"] });
-addRune("sand", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow 32.83Kx [∞]"] });
-addRune("sand", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire 71.59x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
-addRune("sand", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
-addRune("sand", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Cactus 50x", "Sand 100x"] });
+// --- Desert Rune ---
+addRune("desert", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
+addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
+addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
+addRune("desert", { name: "BRINE", chance: 200000000000000, color: "green", buffs: ["Cactus 25x", "Sand 2x", "Rune Luck 4x"] });
+addRune("desert", { name: "RUST", chance: 10000000000000000, color: "brown", buffs: ["Cactus 5x", "Sand 5x", "Rune Luck 5x"] });
+addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow 32.83Kx [∞]"] });
+addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire 71.59x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
+addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
+addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Cactus 50x", "Sand 100x"] });
 
-// --- FIRE / VOLCANIC SET ---
-addRune("fire", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
-addRune("fire", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
-addRune("fire", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
-addRune("fire", { name: "ASH", chance: 1e21, color: "white", buffs: ["Fire 100x", "Rune Bulk 5x", "Rune Luck 5x"] });
-addRune("fire", { name: "BLAZE", chance: 1e25, color: "pink", buffs: ["Cactus 10x", "Fire 3x", "Rune Luck 10x"] });
-addRune("fire", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 25x", "Fire 10x", "Magma 3x", "Rune Luck 5x"] });
-addRune("fire", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
-addRune("fire", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
+// --- Magma Rune ---
+addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
+addRune("magma", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
+addRune("magma", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
+addRune("magma", { name: "ASH", chance: 1e21, color: "white", buffs: ["Fire 100x", "Rune Bulk 5x", "Rune Luck 5x"] });
+addRune("magma", { name: "BLAZE", chance: 1e25, color: "pink", buffs: ["Cactus 10x", "Fire 3x", "Rune Luck 10x"] });
+addRune("magma", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 25x", "Fire 10x", "Magma 3x", "Rune Luck 5x"] });
+addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
+addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
 
 
 // ============================================================================
