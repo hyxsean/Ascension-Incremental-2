@@ -122,7 +122,6 @@ addRune("magma", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 
 addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
 addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
 
-
 // ============================================================================
 // 3. UTILITIES & MATH ENGINE
 // ============================================================================
@@ -262,10 +261,11 @@ function calculateAndRender() {
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
-  // Toggle field visibility depending on mode
+  // Toggle input fields
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
   const groupBulk = document.getElementById('groupBulk');
+  const potionsSection = document.getElementById('potionsSection');
 
   if (groupRps && groupSpeed && groupBulk) {
     groupRps.style.display = isAdvanced ? 'none' : '';
@@ -273,22 +273,29 @@ function calculateAndRender() {
     groupBulk.style.display = isAdvanced ? '' : 'none';
   }
 
-  const potServer = getChecked('potServer', false);
-  const potLuck = getChecked('potLuck', true);
-  const potSpeed = getChecked('potSpeed', true);
-  const potBulk = getChecked('potBulk', true);
-
-  const serverMult = potServer ? 1.25 : 1.0;
-  const luckMult = (potLuck ? 2.0 : 1.0) * serverMult;
-  const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
-  const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
-
-  const finalLuck = rawLuck * luckMult;
+  // Toggle Potions section visibility
+  if (potionsSection) {
+    potionsSection.style.display = isAdvanced ? '' : 'none';
+  }
 
   let baseRPS = 0;
   let actualRPS = 0;
+  let finalLuck = rawLuck;
 
   if (isAdvanced) {
+    // Advanced Mode: Apply potion multipliers
+    const potServer = getChecked('potServer', false);
+    const potLuck = getChecked('potLuck', true);
+    const potSpeed = getChecked('potSpeed', true);
+    const potBulk = getChecked('potBulk', true);
+
+    const serverMult = potServer ? 1.25 : 1.0;
+    const luckMult = (potLuck ? 2.0 : 1.0) * serverMult;
+    const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
+    const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
+
+    finalLuck = rawLuck * luckMult;
+
     const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
     const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
 
@@ -298,9 +305,11 @@ function calculateAndRender() {
     baseRPS = rawSpeed * rawBulk;
     actualRPS = finalSpeed * finalBulk;
   } else {
+    // Basic Mode: Direct calculation without potion multipliers
     const rawRPS = parseFormattedNumber(getVal('rpsInput', '0'));
     baseRPS = rawRPS;
-    actualRPS = rawRPS * speedMult * bulkMult;
+    actualRPS = rawRPS;
+    finalLuck = rawLuck;
   }
 
   setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
