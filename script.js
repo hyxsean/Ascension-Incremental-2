@@ -226,12 +226,13 @@ function setupControlPanel() {
     '</div>' +
     '<div style="display: flex; align-items: center; gap: 8px;">' +
       '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
-      '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 80px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
+      '<input type="text" id="targetRuneInput" value="1" style="width: 110px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
     '</div>';
 
   const targetInputEl = document.getElementById('targetRuneInput');
   if (targetInputEl) {
     targetInputEl.addEventListener('input', calculateAndRender);
+    targetInputEl.addEventListener('change', calculateAndRender);
   }
 }
 
@@ -373,7 +374,7 @@ function calculateAndRender() {
       '<div>' +
         '<div class="rune-title">' + rune.name + '</div>' +
         '<div class="rune-category">[' + rune.type + ']</div>' +
-        '<div class="time-badge">Est. Time (' + targetRuneCount + 'x): ' + formatTime(secondsForTarget) + '</div>' +
+        '<div class="time-badge">Est. Time (' + formatNumber(targetRuneCount) + 'x): ' + formatTime(secondsForTarget) + '</div>' +
         '<div class="buffs-container">' + buffsHTML + '</div>' +
       '</div>' +
       '<div>' +
