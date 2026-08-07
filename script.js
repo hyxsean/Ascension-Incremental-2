@@ -2,29 +2,17 @@ const STORAGE_KEY = 'ascension_ii_optimizer_data';
 let currentTab = '';
 
 // ============================================================================
-// 1. MODULAR REGISTRATION SYSTEM
+// 1. REGISTRATION SYSTEM
 // ============================================================================
 
 const runeCategories = {};
 const runeDatabase = {};
 
 const buffColorMap = {
-  "snow": "#38bdf8",
-  "points": "#ffffff",
-  "flux": "#fbbf24",
-  "voltage": "#f87171",
-  "damage": "#f87171",
-  "fire": "#f87171",
-  "particles": "#38bdf8",
-  "tokens": "#38bdf8",
-  "pulse": "#34d399",
-  "cactus": "#34d399",
-  "luck": "#34d399",
-  "bulk": "#fbbf24",
-  "speed": "#38bdf8",
-  "plasma": "#c084fc",
-  "shards": "#c084fc",
-  "magma": "#fb923c",
+  "snow": "#38bdf8", "points": "#ffffff", "flux": "#fbbf24", "voltage": "#f87171",
+  "damage": "#f87171", "fire": "#f87171", "particles": "#38bdf8", "tokens": "#38bdf8",
+  "pulse": "#34d399", "cactus": "#34d399", "luck": "#34d399", "bulk": "#fbbf24",
+  "speed": "#38bdf8", "plasma": "#c084fc", "shards": "#c084fc", "magma": "#fb923c",
   "sand": "#fbbf24"
 };
 
@@ -35,14 +23,10 @@ function registerCategory(id, displayName) {
 }
 
 function addRune(categoryId, config) {
-  if (!runeDatabase[categoryId]) {
-    console.error("Category '" + categoryId + "' does not exist. Register it first using registerCategory().");
-    return;
-  }
+  if (!runeDatabase[categoryId]) return;
 
   const processedBuffs = (config.buffs || []).map(function(b) {
     if (typeof b === 'object' && b.text) return b;
-    
     let color = "#ffffff";
     const lower = String(b).toLowerCase();
     
@@ -58,20 +42,18 @@ function addRune(categoryId, config) {
   const baseChance = config.chance || config.baseChance || 1;
   const isDeity = config.type === "Deity";
 
-  const rune = {
+  runeDatabase[categoryId].push({
     name: config.name || "UNKNOWN",
     type: config.type || "Basic",
     baseChance: baseChance,
     luckOnChance: config.luckOnChance || (isDeity ? baseChance * 10 : baseChance),
     colorClass: "color-" + (config.color || "white"),
     buffs: processedBuffs
-  };
-
-  runeDatabase[categoryId].push(rune);
+  });
 }
 
 // ============================================================================
-// 2. DEFINE YOUR DATABASE
+// 2. RUNES DATABASE
 // ============================================================================
 
 registerCategory("basic", "Basic Rune");
@@ -79,7 +61,7 @@ registerCategory("essential", "Essential Rune");
 registerCategory("desert", "Desert Rune");
 registerCategory("magma", "Magma Rune");
 
-// --- BASIC SET ---
+// Basic Set
 addRune("basic", { name: "COMMON", chance: 2, color: "white", buffs: ["Points 4x"] });
 addRune("basic", { name: "UNCOMMON", chance: 3, color: "green", buffs: ["Points 10x"] });
 addRune("basic", { name: "RARE", chance: 15, color: "blue", buffs: ["Flux 5x"] });
@@ -90,7 +72,7 @@ addRune("basic", { name: "KING", type: "Deity", chance: 20000000, luckOnChance: 
 addRune("basic", { name: "EMPEROR", type: "Deity", chance: 500000000, luckOnChance: 3314000000, color: "cyan", buffs: ["Points 100x", "Particles 25x", "Rune Bulk 3x", "Rune Speed 3x"] });
 addRune("basic", { name: "OVERLORD", type: "Deity", chance: 90.52e15, luckOnChance: 600e15, color: "pink", buffs: ["Points 1Kx", "Sacrifice Points 2.5x", "Rune Bulk 50x", "Tokens 4x"] });
 
-// --- ESSENTIAL SET ---
+// Essential Set
 addRune("essential", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
 addRune("essential", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
 addRune("essential", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
@@ -101,7 +83,7 @@ addRune("essential", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luck
 addRune("essential", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
 addRune("essential", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
 
-// --- DESERT SET ---
+// Desert Set
 addRune("desert", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
 addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
 addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
@@ -112,7 +94,7 @@ addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.
 addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
 addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
 
-// --- MAGMA SET ---
+// Magma Set
 addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
 addRune("magma", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
 addRune("magma", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
@@ -123,21 +105,13 @@ addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 
 addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
 
 // ============================================================================
-// 3. UTILITIES & MATH ENGINE
+// 3. UTILITIES & ENGINE
 // ============================================================================
 
 const suffixesMap = {
   "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "Qd": 1e15, "Qn": 1e18, "Sx": 1e21, "Sp": 1e24, "Oc": 1e27, "No": 1e30,
   "De": 1e33, "UDe": 1e36, "DDe": 1e39, "TDe": 1e42, "QdDe": 1e45, "QnDe": 1e48, "SxDe": 1e51, "SpDe": 1e54, "OcDe": 1e57, "NoDe": 1e60,
-  "Vt": 1e63, "UVt": 1e66, "DVt": 1e69, "TVt": 1e72, "QdVt": 1e75, "QnVt": 1e78, "SxVt": 1e81, "SpVt": 1e84, "OcVt": 1e87, "NoVt": 1e90,
-  "Tg": 1e93, "UTg": 1e96, "DTg": 1e99, "TTg": 1e102, "QdTg": 1e105, "QnTg": 1e108, "SxTg": 1e111, "SpTg": 1e114, "OcTg": 1e117, "NoTg": 1e120,
-  "qg": 1e123, "Uqg": 1e126, "Dqg": 1e129, "Tqg": 1e132, "Qdqg": 1e135, "Qnqg": 1e138, "Sxqg": 1e141, "Spqg": 1e144, "Ocqg": 1e147, "Noqg": 1e150,
-  "Qg": 1e153, "UQg": 1e156, "DQg": 1e159, "TQg": 1e162, "QdQg": 1e165, "QnQg": 1e168, "SxQg": 1e171, "SpQg": 1e174, "OcQg": 1e177, "NoQg": 1e180,
-  "sg": 1e183, "Usg": 1e186, "Dsg": 1e189, "Tsg": 1e192, "Qdsg": 1e195, "Qnsg": 1e198, "Sxsg": 1e201, "Spsg": 1e204, "Ocsg": 1e207, "Nosg": 1e210,
-  "Sg": 1e213, "USg": 1e216, "DSg": 1e219, "TSg": 1e222, "QdSg": 1e225, "QnSg": 1e228, "SxSg": 1e231, "SpSg": 1e234, "OcSg": 1e237, "NoSg": 1e240,
-  "Og": 1e243, "UOg": 1e246, "DOg": 1e249, "TOg": 1e252, "QdOg": 1e255, "QnOg": 1e258, "SxOg": 1e261, "SpOg": 1e264, "OcOg": 1e267, "NoOg": 1e270,
-  "Ng": 1e273, "UNg": 1e276, "DNg": 1e279, "TNg": 1e282, "QdNg": 1e285, "QnNg": 1e288, "SxNg": 1e291, "SpNg": 1e294, "OcNg": 1e297, "NoNg": 1e300,
-  "Ce": 1e303, "UCe": 1e306
+  "Vt": 1e63, "UVt": 1e66, "DVt": 1e69, "TVt": 1e72, "QdVt": 1e75, "QnVt": 1e78, "SxVt": 1e81, "SpVt": 1e84, "OcVt": 1e87, "NoVt": 1e90
 };
 
 const suffixesList = Object.keys(suffixesMap);
@@ -229,11 +203,11 @@ function formatTime(totalSeconds) {
 }
 
 // ============================================================================
-// 4. RENDERING & UI GENERATION
+// 4. RENDERING & EVENTS
 // ============================================================================
 
 function renderCategoryTabs() {
-  const container = document.querySelector('.tabs-container') || document.querySelector('.tabs');
+  const container = document.querySelector('.tabs-container');
   if (!container) return;
 
   container.innerHTML = "";
@@ -241,7 +215,6 @@ function renderCategoryTabs() {
   Object.keys(runeCategories).forEach(function(catId) {
     const btn = document.createElement('button');
     btn.className = "tab-btn" + (catId === currentTab ? " active" : "");
-    btn.setAttribute('data-tab', catId);
     btn.textContent = runeCategories[catId];
 
     btn.addEventListener('click', function() {
@@ -261,13 +234,13 @@ function calculateAndRender() {
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
-  // Show / Hide elements based on mode
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
   const groupBulk = document.getElementById('groupBulk');
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
+  // Toggle Basic vs Advanced Visibility
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
   if (groupBulk) groupBulk.style.display = isAdvanced ? 'flex' : 'none';
@@ -279,7 +252,6 @@ function calculateAndRender() {
   let finalLuck = rawLuck;
 
   if (isAdvanced) {
-    // Advanced Mode: calculate using Speed x Bulk x Potions
     const potServer = getChecked('potServer', false);
     const potLuck = getChecked('potLuck', true);
     const potSpeed = getChecked('potSpeed', true);
@@ -295,19 +267,15 @@ function calculateAndRender() {
     const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
     const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
 
-    const finalSpeed = rawSpeed * speedMult;
-    const finalBulk = rawBulk * bulkMult;
-
     baseRPS = rawSpeed * rawBulk;
-    actualRPS = finalSpeed * finalBulk;
+    actualRPS = (rawSpeed * speedMult) * (rawBulk * bulkMult);
   } else {
-    // Basic Mode: direct single input without potion calculations
-    const rawRPS = parseFormattedNumber(getVal('rpsInput', '0'));
-    baseRPS = rawRPS;
-    actualRPS = rawRPS;
+    // Basic Mode: Single Current Rate input
+    actualRPS = parseFormattedNumber(getVal('rpsInput', '2000'));
+    baseRPS = actualRPS;
     finalLuck = rawLuck;
 
-    // Update Image 6 parsed rate text readout
+    // Update Image 7 readout text
     setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
   }
 
@@ -325,8 +293,7 @@ function calculateAndRender() {
   } else if (needed <= 0) {
     setText('goalTimeDisplay', "Goal Reached!");
   } else {
-    const seconds = needed / incomePerSec;
-    setText('goalTimeDisplay', formatTime(seconds));
+    setText('goalTimeDisplay', formatTime(needed / incomePerSec));
   }
 
   const grid = document.getElementById('runeGrid');
@@ -353,9 +320,7 @@ function calculateAndRender() {
     card.className = "rune-card " + rune.colorClass;
 
     let buffsHTML = rune.buffs.map(function(buff) { 
-      return '<div class="buff-item" style="color: ' + buff.color + '">' +
-        buff.text + ' <span class="tag-max">[MAX]</span>' +
-      '</div>';
+      return '<div class="buff-item" style="color: ' + buff.color + '">' + buff.text + '</div>';
     }).join('');
 
     let warningHTML = "";
@@ -371,7 +336,6 @@ function calculateAndRender() {
         '<div class="rune-title">' + rune.name + '</div>' +
         '<div class="rune-category">[' + rune.type + ']</div>' +
         '<div class="time-badge">Est. Time: ' + formatTime(secondsForOne) + '</div>' +
-        '<div class="divider"></div>' +
         '<div class="buffs-container">' + buffsHTML + '</div>' +
       '</div>' +
       '<div>' +
@@ -388,7 +352,7 @@ function calculateAndRender() {
 function saveData() {
   const data = {
     luckInput: getVal('luckInput', '738.01Qn'),
-    rpsInput: getVal('rpsInput', '32.27De'),
+    rpsInput: getVal('rpsInput', '2000'),
     speedInput: getVal('speedInput', '139.1M'),
     bulkInput: getVal('bulkInput', '11.38Sp'),
     cloneInput: getVal('cloneInput', '8'),
@@ -439,7 +403,6 @@ document.addEventListener('DOMContentLoaded', function() {
   loadData();
   renderCategoryTabs();
 
-  // Attach event listeners to all inputs & switches
   document.querySelectorAll('input').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
     input.addEventListener('change', calculateAndRender);
