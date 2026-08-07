@@ -216,23 +216,26 @@ function setupControlPanel() {
     panel.id = 'dashboardControlPanel';
     panel.style.cssText = 'background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;';
     grid.parentNode.insertBefore(panel, grid);
-  }
-  
-  if (!panel) return;
+    
+    panel.innerHTML = 
+      '<div id="panelTitle" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
+        (runeCategories[currentTab] || 'Rune') + ' Settings' +
+      '</div>' +
+      '<div style="display: flex; align-items: center; gap: 8px;">' +
+        '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
+        '<input type="text" id="targetRuneInput" value="1" style="width: 110px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
+      '</div>';
 
-  panel.innerHTML = 
-    '<div style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
-      (runeCategories[currentTab] || 'Rune') + ' Settings' +
-    '</div>' +
-    '<div style="display: flex; align-items: center; gap: 8px;">' +
-      '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
-      '<input type="text" id="targetRuneInput" value="1" style="width: 110px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
-    '</div>';
-
-  const targetInputEl = document.getElementById('targetRuneInput');
-  if (targetInputEl) {
-    targetInputEl.addEventListener('input', calculateAndRender);
-    targetInputEl.addEventListener('change', calculateAndRender);
+    const targetInputEl = document.getElementById('targetRuneInput');
+    if (targetInputEl) {
+      targetInputEl.addEventListener('input', calculateAndRender);
+      targetInputEl.addEventListener('change', calculateAndRender);
+    }
+  } else {
+    const titleEl = document.getElementById('panelTitle');
+    if (titleEl) {
+      titleEl.textContent = (runeCategories[currentTab] || 'Rune') + ' Settings';
+    }
   }
 }
 
@@ -276,7 +279,6 @@ function calculateAndRender() {
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
-  // Toggle Basic vs Advanced Visibility
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
   if (groupLuck) groupLuck.style.display = isAdvanced ? 'flex' : 'none';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
@@ -308,7 +310,6 @@ function calculateAndRender() {
     baseRPS = rawSpeed * rawBulk;
     actualRPS = (rawSpeed * speedMult) * (rawBulk * bulkMult);
   } else {
-    // Basic Mode: Single Current Rate input
     actualRPS = parseFormattedNumber(getVal('rpsInput', '2000'));
     baseRPS = actualRPS;
     finalLuck = rawLuck;
@@ -320,7 +321,6 @@ function calculateAndRender() {
   setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
   setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
 
-  // Read strictly from the Income Rate input field for currency progression
   const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
 
   const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
@@ -441,9 +441,9 @@ function loadData() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadData();
   renderCategoryTabs();
   setupControlPanel();
+  loadData();
 
   document.querySelectorAll('input').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
