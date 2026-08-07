@@ -1,3 +1,12 @@
+Here is the updated **`script.js`** code.
+
+Helper functions and optional chaining (`?.`) have been added to all DOM interactions (`potServer`, `resetBtn`, etc.). Now, **even if certain elements are commented out or missing from `index.html`, the script will continue running without crashing**.
+
+---
+
+### Replace your `script.js` with this code:
+
+```javascript
 const STORAGE_KEY = 'ascension_ii_optimizer_data';
 let currentTab = 'basic';
 
@@ -16,6 +25,30 @@ const suffixesMap = {
 };
 
 const suffixesList = Object.keys(suffixesMap);
+
+/* Safe DOM Helper Functions */
+function getVal(id, fallback = '') {
+  return document.getElementById(id)?.value ?? fallback;
+}
+
+function getChecked(id, fallback = false) {
+  return document.getElementById(id)?.checked ?? fallback;
+}
+
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function setChecked(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.checked = val;
+}
+
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
 
 function parseFormattedNumber(inputStr) {
   if (typeof inputStr !== 'string') inputStr = String(inputStr);
@@ -127,18 +160,18 @@ const runeDatabase = {
 /* Auto-Save & Load Functions */
 function saveData() {
   const data = {
-    luckInput: document.getElementById('luckInput').value,
-    speedInput: document.getElementById('speedInput').value,
-    bulkInput: document.getElementById('bulkInput').value,
-    cloneInput: document.getElementById('cloneInput').value,
-    luckToggle: document.getElementById('luckToggle').checked,
-    potServer: document.getElementById('potServer').checked,
-    potLuck: document.getElementById('potLuck').checked,
-    potSpeed: document.getElementById('potSpeed').checked,
-    potBulk: document.getElementById('potBulk').checked,
-    incomeInput: document.getElementById('incomeInput').value,
-    currentInput: document.getElementById('currentInput').value,
-    targetInput: document.getElementById('targetInput').value,
+    luckInput: getVal('luckInput', '738.01Qn'),
+    speedInput: getVal('speedInput', '139.1M'),
+    bulkInput: getVal('bulkInput', '11.38Sp'),
+    cloneInput: getVal('cloneInput', '8'),
+    luckToggle: getChecked('luckToggle', true),
+    potServer: getChecked('potServer', false),
+    potLuck: getChecked('potLuck', true),
+    potSpeed: getChecked('potSpeed', true),
+    potBulk: getChecked('potBulk', true),
+    incomeInput: getVal('incomeInput', '4.6T'),
+    currentInput: getVal('currentInput', '900Qd'),
+    targetInput: getVal('targetInput', '2Qn'),
     currentTab: currentTab
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -150,18 +183,18 @@ function loadData() {
 
   try {
     const data = JSON.parse(raw);
-    if (data.luckInput !== undefined) document.getElementById('luckInput').value = data.luckInput;
-    if (data.speedInput !== undefined) document.getElementById('speedInput').value = data.speedInput;
-    if (data.bulkInput !== undefined) document.getElementById('bulkInput').value = data.bulkInput;
-    if (data.cloneInput !== undefined) document.getElementById('cloneInput').value = data.cloneInput;
-    if (data.luckToggle !== undefined) document.getElementById('luckToggle').checked = data.luckToggle;
-    if (data.potServer !== undefined) document.getElementById('potServer').checked = data.potServer;
-    if (data.potLuck !== undefined) document.getElementById('potLuck').checked = data.potLuck;
-    if (data.potSpeed !== undefined) document.getElementById('potSpeed').checked = data.potSpeed;
-    if (data.potBulk !== undefined) document.getElementById('potBulk').checked = data.potBulk;
-    if (data.incomeInput !== undefined) document.getElementById('incomeInput').value = data.incomeInput;
-    if (data.currentInput !== undefined) document.getElementById('currentInput').value = data.currentInput;
-    if (data.targetInput !== undefined) document.getElementById('targetInput').value = data.targetInput;
+    if (data.luckInput !== undefined) setVal('luckInput', data.luckInput);
+    if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
+    if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
+    if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
+    if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
+    if (data.potServer !== undefined) setChecked('potServer', data.potServer);
+    if (data.potLuck !== undefined) setChecked('potLuck', data.potLuck);
+    if (data.potSpeed !== undefined) setChecked('potSpeed', data.potSpeed);
+    if (data.potBulk !== undefined) setChecked('potBulk', data.potBulk);
+    if (data.incomeInput !== undefined) setVal('incomeInput', data.incomeInput);
+    if (data.currentInput !== undefined) setVal('currentInput', data.currentInput);
+    if (data.targetInput !== undefined) setVal('targetInput', data.targetInput);
 
     if (data.currentTab && runeDatabase[data.currentTab]) {
       currentTab = data.currentTab;
@@ -175,16 +208,16 @@ function loadData() {
 }
 
 function calculateAndRender() {
-  const rawLuck = parseFormattedNumber(document.getElementById('luckInput').value);
-  const rawSpeed = parseFormattedNumber(document.getElementById('speedInput').value);
-  const rawBulk = parseFormattedNumber(document.getElementById('bulkInput').value);
-  const cloneVal = parseFormattedNumber(document.getElementById('cloneInput').value);
-  const globalLuckToggle = document.getElementById('luckToggle').checked;
+  const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
+  const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
+  const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
+  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
+  const globalLuckToggle = getChecked('luckToggle', true);
 
-  const potServer = document.getElementById('potServer').checked;
-  const potLuck = document.getElementById('potLuck').checked;
-  const potSpeed = document.getElementById('potSpeed').checked;
-  const potBulk = document.getElementById('potBulk').checked;
+  const potServer = getChecked('potServer', false);
+  const potLuck = getChecked('potLuck', true);
+  const potSpeed = getChecked('potSpeed', true);
+  const potBulk = getChecked('potBulk', true);
 
   const serverMult = potServer ? 1.25 : 1.0;
   const luckMult = (potLuck ? 2.0 : 1.0) * serverMult;
@@ -198,28 +231,29 @@ function calculateAndRender() {
   const baseRPS = rawBulk * rawSpeed;
   const actualRPS = finalBulk * finalSpeed;
 
-  document.getElementById('actualRpsDisplay').textContent = formatNumber(actualRPS) + " RPS";
-  document.getElementById('baseRpsDisplay').textContent = formatNumber(baseRPS) + " RPS";
-  document.getElementById('luckDisplay').textContent = globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off";
+  setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
+  setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
+  setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
 
-  const incomePerSec = parseFormattedNumber(document.getElementById('incomeInput').value);
-  const currentVal = parseFormattedNumber(document.getElementById('currentInput').value);
-  const targetVal = parseFormattedNumber(document.getElementById('targetInput').value);
+  const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
+  const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
+  const targetVal = parseFormattedNumber(getVal('targetInput', '0'));
 
   const needed = targetVal - currentVal;
   if (incomePerSec <= 0) {
-    document.getElementById('goalTimeDisplay').textContent = "N/A (0 Income)";
+    setText('goalTimeDisplay', "N/A (0 Income)");
   } else if (needed <= 0) {
-    document.getElementById('goalTimeDisplay').textContent = "Goal Reached!";
+    setText('goalTimeDisplay', "Goal Reached!");
   } else {
     const seconds = needed / incomePerSec;
-    document.getElementById('goalTimeDisplay').textContent = formatTime(seconds);
+    setText('goalTimeDisplay', formatTime(seconds));
   }
 
   const grid = document.getElementById('runeGrid');
+  if (!grid) return;
   grid.innerHTML = "";
 
-  const activeSet = runeDatabase[currentTab];
+  const activeSet = runeDatabase[currentTab] || [];
 
   activeSet.forEach(rune => {
     let effectiveChance = rune.baseChance;
@@ -287,7 +321,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-document.getElementById('resetBtn').addEventListener('click', () => {
+document.getElementById('resetBtn')?.addEventListener('click', () => {
   if (confirm("Reset all calculator stats to defaults?")) {
     localStorage.removeItem(STORAGE_KEY);
     location.reload();
@@ -297,3 +331,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 // Initialization
 loadData();
 calculateAndRender();
+
+```
