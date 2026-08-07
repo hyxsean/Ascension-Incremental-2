@@ -155,13 +155,11 @@ function parseFormattedNumber(inputStr) {
 
   if (!suffix) return val || 0;
 
-  // Capitalize the first letter and keep the rest case-insensitive (e.g. 'k' -> 'K', 'qn' -> 'Qn')
   const formattedSuffix = suffix.charAt(0).toUpperCase() + suffix.slice(1);
   if (suffixesMap[formattedSuffix] !== undefined) {
     return val * suffixesMap[formattedSuffix];
   }
 
-  // Deep fallback matching
   const lower = suffix.toLowerCase();
   const key = suffixesList.find(function(k) { return k.toLowerCase() === lower; });
   return key ? val * suffixesMap[key] : (val || 0);
@@ -231,17 +229,21 @@ function setupControlPanel() {
         '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
         '<input type="text" id="targetRuneInput" value="1" style="width: 110px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
       '</div>';
-
-    const targetInputEl = document.getElementById('targetRuneInput');
-    if (targetInputEl) {
-      targetInputEl.addEventListener('input', calculateAndRender);
-      targetInputEl.addEventListener('change', calculateAndRender);
-    }
   } else {
     const titleEl = document.getElementById('panelTitle');
     if (titleEl) {
       titleEl.textContent = (runeCategories[currentTab] || 'Rune') + ' Settings';
     }
+  }
+
+  // FORCE input type to text to get rid of number spinners that block letters
+  const targetInputEl = document.getElementById('targetRuneInput');
+  if (targetInputEl) {
+    targetInputEl.type = 'text';
+    targetInputEl.removeEventListener('input', calculateAndRender);
+    targetInputEl.removeEventListener('change', calculateAndRender);
+    targetInputEl.addEventListener('input', calculateAndRender);
+    targetInputEl.addEventListener('change', calculateAndRender);
   }
 }
 
