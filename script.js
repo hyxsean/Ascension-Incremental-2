@@ -1,8 +1,8 @@
-const STORAGE_KEY = 'ascension_ii_optimizer_data_v3';
+const STORAGE_KEY = 'ascension_ii_optimizer_data_v2';
 let currentTab = '';
 
 // ============================================================================
-// 1. REGISTRATION SYSTEM & PROGRESSION STAGES
+// 1. REGISTRATION SYSTEM
 // ============================================================================
 
 const runeCategories = {};
@@ -61,6 +61,7 @@ registerCategory("essential", "Essential Rune");
 registerCategory("desert", "Desert Rune");
 registerCategory("magma", "Magma Rune");
 
+// Basic Set
 addRune("basic", { name: "COMMON", chance: 2, color: "white", buffs: ["Points 4x"] });
 addRune("basic", { name: "UNCOMMON", chance: 3, color: "green", buffs: ["Points 10x"] });
 addRune("basic", { name: "RARE", chance: 15, color: "blue", buffs: ["Flux 5x"] });
@@ -71,6 +72,7 @@ addRune("basic", { name: "KING", type: "Deity", chance: 20000000, luckOnChance: 
 addRune("basic", { name: "EMPEROR", type: "Deity", chance: 500000000, luckOnChance: 3314000000, color: "cyan", buffs: ["Points 100x", "Particles 25x", "Rune Bulk 3x", "Rune Speed 3x"] });
 addRune("basic", { name: "OVERLORD", type: "Deity", chance: 90.52e15, luckOnChance: 600e15, color: "pink", buffs: ["Points 1Kx", "Sacrifice Points 2.5x", "Rune Bulk 50x", "Tokens 4x"] });
 
+// Essential Set
 addRune("essential", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
 addRune("essential", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
 addRune("essential", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
@@ -81,6 +83,7 @@ addRune("essential", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luck
 addRune("essential", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
 addRune("essential", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
 
+// Desert Set
 addRune("desert", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
 addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
 addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
@@ -91,6 +94,7 @@ addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.
 addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
 addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
 
+// Magma Set
 addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
 addRune("magma", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
 addRune("magma", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
@@ -199,28 +203,8 @@ function formatTime(totalSeconds) {
 }
 
 // ============================================================================
-// 4. RENDERING & UI INJECTION
+// 4. RENDERING & EVENTS
 // ============================================================================
-
-function setupControlPanel() {
-  let panel = document.getElementById('dashboardControlPanel');
-  const grid = document.getElementById('runeGrid');
-  
-  if (!panel && grid && grid.parentNode) {
-    panel = document.createElement('div');
-    panel.id = 'dashboardControlPanel';
-    panel.style.cssText = 'background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px;';
-    grid.parentNode.insertBefore(panel, grid);
-  }
-  
-  if (!panel) return;
-  panel.style.display = 'flex';
-
-  const targetInputEl = document.getElementById('targetRuneInput');
-  if (targetInputEl) {
-    targetInputEl.addEventListener('input', calculateAndRender);
-  }
-}
 
 function renderCategoryTabs() {
   const container = document.querySelector('.tabs-container');
@@ -237,25 +221,16 @@ function renderCategoryTabs() {
       document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       currentTab = catId;
-      setupControlPanel();
       calculateAndRender();
     });
 
     container.appendChild(btn);
   });
-  
-  setupControlPanel();
 }
 
 function calculateAndRender() {
-  const grid = document.getElementById('runeGrid');
-  if (grid) {
-    grid.style.cssText = ''; 
-  }
-
   const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
-  const baseCloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
-  const targetRuneCount = Math.max(1, parseFormattedNumber(getVal('targetRuneInput', '1')));
+  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1')); // <-- FIXED: Added cloneVal definition here
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
@@ -267,6 +242,7 @@ function calculateAndRender() {
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
+  // Toggle Basic vs Advanced Visibility
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
   if (groupLuck) groupLuck.style.display = isAdvanced ? 'flex' : 'none';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
@@ -290,23 +266,29 @@ function calculateAndRender() {
     const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
     const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
 
+    finalLuck = rawLuck * luckMult;
+
     const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
     const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
 
     baseRPS = rawSpeed * rawBulk;
     actualRPS = (rawSpeed * speedMult) * (rawBulk * bulkMult);
   } else {
+    // Basic Mode: Single Current Rate input
     actualRPS = parseFormattedNumber(getVal('rpsInput', '2000'));
     baseRPS = actualRPS;
+    finalLuck = rawLuck;
 
-    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS (Stage Boosted)');
+    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
   }
 
   setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
   setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
   setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
 
+  // Read strictly from the Income Rate input field for currency progression
   const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
+
   const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
   const targetVal = parseFormattedNumber(getVal('targetInput', '0'));
 
@@ -319,6 +301,7 @@ function calculateAndRender() {
     setText('goalTimeDisplay', formatTime(needed / incomePerSec));
   }
 
+  const grid = document.getElementById('runeGrid');
   if (!grid) return;
   grid.innerHTML = "";
 
@@ -336,7 +319,7 @@ function calculateAndRender() {
 
     const dropProbability = 1 / Math.max(1, effectiveChance);
     const estimatedYieldPerSec = actualRPS * dropProbability * Math.max(1, cloneVal);
-    const secondsForTarget = estimatedYieldPerSec > 0 ? (targetRuneCount / estimatedYieldPerSec) : Infinity;
+    const secondsForOne = estimatedYieldPerSec > 0 ? (1 / estimatedYieldPerSec) : Infinity;
 
     const card = document.createElement('div');
     card.className = "rune-card " + rune.colorClass;
@@ -357,7 +340,7 @@ function calculateAndRender() {
       '<div>' +
         '<div class="rune-title">' + rune.name + '</div>' +
         '<div class="rune-category">[' + rune.type + ']</div>' +
-        '<div class="time-badge">Est. Time (' + targetRuneCount + 'x): ' + formatTime(secondsForTarget) + '</div>' +
+        '<div class="time-badge">Est. Time: ' + formatTime(secondsForOne) + '</div>' +
         '<div class="buffs-container">' + buffsHTML + '</div>' +
       '</div>' +
       '<div>' +
@@ -378,7 +361,6 @@ function saveData() {
     speedInput: getVal('speedInput', ''),
     bulkInput: getVal('bulkInput', ''),
     cloneInput: getVal('cloneInput', ''),
-    targetRuneInput: getVal('targetRuneInput', '1'),
     luckToggle: getChecked('luckToggle', true),
     advancedToggle: getChecked('advancedToggle', false),
     potServer: getChecked('potServer', false),
@@ -388,7 +370,7 @@ function saveData() {
     incomeInput: getVal('incomeInput', ''),
     currentInput: getVal('currentInput', ''),
     targetInput: getVal('targetInput', ''),
-    currentTab: currentTab,
+    currentTab: currentTab
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -404,7 +386,6 @@ function loadData() {
     if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
     if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
     if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
-    if (data.targetRuneInput !== undefined) setVal('targetRuneInput', data.targetRuneInput);
     if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
     if (data.advancedToggle !== undefined) setChecked('advancedToggle', data.advancedToggle);
     if (data.potServer !== undefined) setChecked('potServer', data.potServer);
@@ -426,9 +407,8 @@ function loadData() {
 document.addEventListener('DOMContentLoaded', function() {
   loadData();
   renderCategoryTabs();
-  setupControlPanel();
 
-  document.querySelectorAll('input, select').forEach(function(input) {
+  document.querySelectorAll('input').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
     input.addEventListener('change', calculateAndRender);
   });
