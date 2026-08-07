@@ -89,8 +89,8 @@ addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: 
 addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
 addRune("desert", { name: "BRINE", chance: 200000000000000, color: "green", buffs: ["Cactus 25x", "Sand 2x", "Rune Luck 4x"] });
 addRune("desert", { name: "RUST", chance: 10000000000000000, color: "brown", buffs: ["Cactus 5x", "Sand 5x", "Rune Luck 5x"] });
-addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow – [∞]"] });
-addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire – [∞]", "Rune Bulk 3x", "Tokens 50x"] });
+addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow 32.83Kx [∞]"] });
+addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire 71.59x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
 addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
 addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
 
@@ -102,7 +102,7 @@ addRune("magma", { name: "ASH", chance: 1e21, color: "white", buffs: ["Fire 100x
 addRune("magma", { name: "BLAZE", chance: 1e25, color: "pink", buffs: ["Cactus 10x", "Fire 3x", "Rune Luck 10x"] });
 addRune("magma", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 25x", "Fire 10x", "Magma 3x", "Rune Luck 5x"] });
 addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
-addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points x [∞]", "Rune Bulk 25x", "Tokens 100x"] });
+addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 100x [∞]", "Rune Bulk 25x", "Tokens 100x"] });
 
 // ============================================================================
 // 3. UTILITIES & ENGINE
@@ -242,7 +242,7 @@ function calculateAndRender() {
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
-// Toggle Basic vs Advanced Visibility
+  // Toggle Basic vs Advanced Visibility
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
   if (groupLuck) groupLuck.style.display = isAdvanced ? 'flex' : 'none';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
@@ -279,7 +279,6 @@ function calculateAndRender() {
     baseRPS = actualRPS;
     finalLuck = rawLuck;
 
-    // Update Image 7 readout text
     setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
   }
 
@@ -287,7 +286,10 @@ function calculateAndRender() {
   setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
   setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
 
-  const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
+  // Fallback to Effective RPS if income input is left blank
+  const rawIncomeStr = getVal('incomeInput', '').trim();
+  const incomePerSec = rawIncomeStr !== '' ? parseFormattedNumber(rawIncomeStr) : actualRPS;
+
   const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
   const targetVal = parseFormattedNumber(getVal('targetInput', '0'));
 
@@ -355,20 +357,20 @@ function calculateAndRender() {
 
 function saveData() {
   const data = {
-    luckInput: getVal('luckInput', '738.01Qn'),
-    rpsInput: getVal('rpsInput', '2000'),
-    speedInput: getVal('speedInput', '139.1M'),
-    bulkInput: getVal('bulkInput', '11.38Sp'),
-    cloneInput: getVal('cloneInput', '8'),
+    luckInput: getVal('luckInput', ''),
+    rpsInput: getVal('rpsInput', ''),
+    speedInput: getVal('speedInput', ''),
+    bulkInput: getVal('bulkInput', ''),
+    cloneInput: getVal('cloneInput', ''),
     luckToggle: getChecked('luckToggle', true),
     advancedToggle: getChecked('advancedToggle', false),
     potServer: getChecked('potServer', false),
     potLuck: getChecked('potLuck', true),
     potSpeed: getChecked('potSpeed', true),
     potBulk: getChecked('potBulk', true),
-    incomeInput: getVal('incomeInput', '4.6T'),
-    currentInput: getVal('currentInput', '900Qd'),
-    targetInput: getVal('targetInput', '2Qn'),
+    incomeInput: getVal('incomeInput', ''),
+    currentInput: getVal('currentInput', ''),
+    targetInput: getVal('targetInput', ''),
     currentTab: currentTab
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
