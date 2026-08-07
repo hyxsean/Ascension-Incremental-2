@@ -246,6 +246,7 @@ function calculateAndRender() {
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
   if (groupBulk) groupBulk.style.display = isAdvanced ? 'flex' : 'none';
+  if (groupClone) groupClone.style.display = isAdvanced ? 'flex' : 'none';
   if (potionsSection) potionsSection.style.display = isAdvanced ? 'block' : 'none';
   if (baseRpsMetric) baseRpsMetric.style.display = isAdvanced ? 'flex' : 'none';
 
