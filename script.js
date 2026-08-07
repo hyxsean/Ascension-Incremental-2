@@ -263,7 +263,7 @@ function setupControlPanel() {
   if (!panel) {
     panel = document.createElement('div');
     panel.id = 'dashboardControlPanel';
-    panel.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr; gap: 15px; background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px;';
+    panel.style.cssText = 'background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px;';
     
     const tabsContainer = document.querySelector('.tabs-container');
     if (tabsContainer && tabsContainer.parentNode) {
@@ -274,36 +274,39 @@ function setupControlPanel() {
   const stages = progressionStages[currentTab] || [];
   const currentStageNum = categoryStages[currentTab] || 0;
 
-  let optionsHTML = '';
+  // Build stage buttons row acting as pages
+  let stageButtonsHTML = '';
   stages.forEach(function(st) {
-    optionsHTML += '<option value="' + st.stage + '" ' + (st.stage === currentStageNum ? 'selected' : '') + '>' +
-      (st.stage === 0 ? 'Stage 0 (None)' : 'Stage ' + st.stage + ' (Req: ' + st.req + ')') +
-      '</option>';
+    const isActive = st.stage === currentStageNum;
+    const activeStyle = isActive 
+      ? 'background: #3b82f6; color: #ffffff; border-color: #60a5fa; font-weight: bold;' 
+      : 'background: #1e293b; color: #94a3b8; border-color: #334155;';
+    
+    stageButtonsHTML += '<button type="button" class="stage-page-btn" data-stage="' + st.stage + '" style="padding: 6px 12px; border-radius: 6px; border: 1px solid; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; ' + activeStyle + '" title="Req: ' + st.req + '">Stage ' + st.stage + '</button>';
   });
 
   panel.innerHTML = 
-    '<div>' +
-      '<label for="lineStageSelect" style="font-size: 0.8rem; font-weight: bold; color: #94a3b8; display: block; margin-bottom: 5px; text-transform: uppercase;">' +
-        runeCategories[currentTab] + ' Progression Stage:' +
-      '</label>' +
-      '<select id="lineStageSelect" style="width: 100%; padding: 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
-        optionsHTML +
-      '</select>' +
+    '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">' +
+      '<div style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
+        runeCategories[currentTab] + ' Progression Stages:' +
+      '</div>' +
+      '<div style="display: flex; align-items: center; gap: 8px;">' +
+        '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
+        '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 80px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
+      '</div>' +
     '</div>' +
-    '<div>' +
-      '<label for="targetRuneInput" style="font-size: 0.8rem; font-weight: bold; color: #94a3b8; display: block; margin-bottom: 5px; text-transform: uppercase;">' +
-        'Target Quantity (X):' +
-      '</label>' +
-      '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 100%; padding: 7px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
+    '<div style="display: flex; flex-wrap: wrap; gap: 6px;">' +
+      stageButtonsHTML +
     '</div>';
 
-  const selectEl = document.getElementById('lineStageSelect');
-  if (selectEl) {
-    selectEl.addEventListener('change', function(e) {
-      categoryStages[currentTab] = parseInt(e.target.value, 10) || 0;
+  // Attach event listeners to stage page buttons
+  panel.querySelectorAll('.stage-page-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      categoryStages[currentTab] = parseInt(btn.getAttribute('data-stage'), 10) || 0;
+      setupControlPanel();
       calculateAndRender();
     });
-  }
+  });
 
   const targetInputEl = document.getElementById('targetRuneInput');
   if (targetInputEl) {
@@ -542,3 +545,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calculateAndRender();
 });
+
+```
