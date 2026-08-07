@@ -11,7 +11,7 @@ const runeDatabase = {};
 // Color palette map for automatic buff text coloring
 const buffColorMap = {
   "points": "#ffffff",
-  "flux": "#fbbf24",
+  "flux": "#FFD700",
   "voltage": "#f87171",
   "damage": "#f87171",
   "fire": "#f87171",
@@ -26,6 +26,7 @@ const buffColorMap = {
   "shards": "#c084fc",
   "magma": "#fb923c",
   "sand": "#fbbf24"
+  "snow": "#ffffff"
 };
 
 function registerCategory(id, displayName) {
@@ -109,10 +110,10 @@ addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: 
 addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
 addRune("desert", { name: "BRINE", chance: 200000000000000, color: "green", buffs: ["Cactus 25x", "Sand 2x", "Rune Luck 4x"] });
 addRune("desert", { name: "RUST", chance: 10000000000000000, color: "brown", buffs: ["Cactus 5x", "Sand 5x", "Rune Luck 5x"] });
-addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow 32.83Kx [∞]"] });
-addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire 71.59x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
+addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow x [∞]"] });
+addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
 addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
-addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Cactus 50x", "Sand 100x"] });
+addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
 
 // --- Magma Rune ---
 addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
@@ -122,7 +123,7 @@ addRune("magma", { name: "ASH", chance: 1e21, color: "white", buffs: ["Fire 100x
 addRune("magma", { name: "BLAZE", chance: 1e25, color: "pink", buffs: ["Cactus 10x", "Fire 3x", "Rune Luck 10x"] });
 addRune("magma", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 25x", "Fire 10x", "Magma 3x", "Rune Luck 5x"] });
 addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
-addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
+addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points x [∞]", "Rune Bulk 25x", "Tokens 100x"] });
 
 
 // ============================================================================
