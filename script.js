@@ -16,7 +16,7 @@ const progressionStages = {
     { stage: 2, req: "10.00K Flux", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
     { stage: 3, req: "50.00K Flux", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
     { stage: 4, req: "1.00M Flux", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "250.00M Flux", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 }, // Clone +1 relative to base
+    { stage: 5, req: "250.00M Flux", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
     { stage: 6, req: "10.00B Flux", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
     { stage: 7, req: "500.00B Flux", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
     { stage: 8, req: "25.00T Flux", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
@@ -117,7 +117,6 @@ registerCategory("essential", "Essential Rune");
 registerCategory("desert", "Desert Rune");
 registerCategory("magma", "Magma Rune");
 
-// Basic Set
 addRune("basic", { name: "COMMON", chance: 2, color: "white", buffs: ["Points 4x"] });
 addRune("basic", { name: "UNCOMMON", chance: 3, color: "green", buffs: ["Points 10x"] });
 addRune("basic", { name: "RARE", chance: 15, color: "blue", buffs: ["Flux 5x"] });
@@ -128,7 +127,6 @@ addRune("basic", { name: "KING", type: "Deity", chance: 20000000, luckOnChance: 
 addRune("basic", { name: "EMPEROR", type: "Deity", chance: 500000000, luckOnChance: 3314000000, color: "cyan", buffs: ["Points 100x", "Particles 25x", "Rune Bulk 3x", "Rune Speed 3x"] });
 addRune("basic", { name: "OVERLORD", type: "Deity", chance: 90.52e15, luckOnChance: 600e15, color: "pink", buffs: ["Points 1Kx", "Sacrifice Points 2.5x", "Rune Bulk 50x", "Tokens 4x"] });
 
-// Essential Set
 addRune("essential", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
 addRune("essential", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
 addRune("essential", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
@@ -139,7 +137,6 @@ addRune("essential", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luck
 addRune("essential", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
 addRune("essential", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
 
-// Desert Set
 addRune("desert", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
 addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
 addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
@@ -150,7 +147,6 @@ addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.
 addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
 addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
 
-// Magma Set
 addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
 addRune("magma", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
 addRune("magma", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
@@ -259,8 +255,61 @@ function formatTime(totalSeconds) {
 }
 
 // ============================================================================
-// 4. RENDERING & EVENTS
+// 4. RENDERING & UI INJECTION
 // ============================================================================
+
+function setupControlPanel() {
+  let panel = document.getElementById('dashboardControlPanel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'dashboardControlPanel';
+    panel.style.cssText = 'display: grid; grid-template-columns: 2fr 1fr; gap: 15px; background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px;';
+    
+    const tabsContainer = document.querySelector('.tabs-container');
+    if (tabsContainer && tabsContainer.parentNode) {
+      tabsContainer.parentNode.insertBefore(panel, tabsContainer);
+    }
+  }
+
+  const stages = progressionStages[currentTab] || [];
+  const currentStageNum = categoryStages[currentTab] || 0;
+
+  let optionsHTML = '';
+  stages.forEach(function(st) {
+    optionsHTML += '<option value="' + st.stage + '" ' + (st.stage === currentStageNum ? 'selected' : '') + '>' +
+      (st.stage === 0 ? 'Stage 0 (None)' : 'Stage ' + st.stage + ' (Req: ' + st.req + ')') +
+      '</option>';
+  });
+
+  panel.innerHTML = 
+    '<div>' +
+      '<label for="lineStageSelect" style="font-size: 0.8rem; font-weight: bold; color: #94a3b8; display: block; margin-bottom: 5px; text-transform: uppercase;">' +
+        runeCategories[currentTab] + ' Progression Stage:' +
+      '</label>' +
+      '<select id="lineStageSelect" style="width: 100%; padding: 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
+        optionsHTML +
+      '</select>' +
+    '</div>' +
+    '<div>' +
+      '<label for="targetRuneInput" style="font-size: 0.8rem; font-weight: bold; color: #94a3b8; display: block; margin-bottom: 5px; text-transform: uppercase;">' +
+        'Target Quantity (X):' +
+      '</label>' +
+      '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 100%; padding: 7px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
+    '</div>';
+
+  const selectEl = document.getElementById('lineStageSelect');
+  if (selectEl) {
+    selectEl.addEventListener('change', function(e) {
+      categoryStages[currentTab] = parseInt(e.target.value, 10) || 0;
+      calculateAndRender();
+    });
+  }
+
+  const targetInputEl = document.getElementById('targetRuneInput');
+  if (targetInputEl) {
+    targetInputEl.addEventListener('input', calculateAndRender);
+  }
+}
 
 function renderCategoryTabs() {
   const container = document.querySelector('.tabs-container');
@@ -277,54 +326,14 @@ function renderCategoryTabs() {
       document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       currentTab = catId;
-      renderStageSelector();
+      setupControlPanel();
       calculateAndRender();
     });
 
     container.appendChild(btn);
   });
   
-  renderStageSelector();
-}
-
-function renderStageSelector() {
-  // Dynamically inject or update stage selector UI block for the active tab
-  let selectorWrapper = document.getElementById('stageSelectorWrapper');
-  if (!selectorWrapper) {
-    selectorWrapper = document.createElement('div');
-    selectorWrapper.id = 'stageSelectorWrapper';
-    selectorWrapper.className = 'stage-selector-card';
-    const tabsContainer = document.querySelector('.tabs-container');
-    if (tabsContainer && tabsContainer.parentNode) {
-      tabsContainer.parentNode.insertBefore(selectorWrapper, tabsContainer.nextSibling);
-    }
-  }
-
-  const stages = progressionStages[currentTab] || [];
-  const currentStageNum = categoryStages[currentTab] || 0;
-
-  let optionsHTML = '';
-  stages.forEach(function(st) {
-    optionsHTML += '<option value="' + st.stage + '" ' + (st.stage === currentStageNum ? 'selected' : '') + '>' +
-      (st.stage === 0 ? 'Stage 0 (None)' : 'Stage ' + st.stage + ' (Req: ' + st.req + ')') +
-      '</option>';
-  });
-
-  selectorWrapper.innerHTML = 
-    '<label for="lineStageSelect" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; display: block; margin-bottom: 4px;">' +
-      runeCategories[currentTab] + ' Progression Stage:' +
-    '</label>' +
-    '<select id="lineStageSelect" style="width: 100%; padding: 6px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px;">' +
-      optionsHTML +
-    '</select>';
-
-  const selectEl = document.getElementById('lineStageSelect');
-  if (selectEl) {
-    selectEl.addEventListener('change', function(e) {
-      categoryStages[currentTab] = parseInt(e.target.value, 10) || 0;
-      calculateAndRender();
-    });
-  }
+  setupControlPanel();
 }
 
 function calculateAndRender() {
@@ -334,7 +343,6 @@ function calculateAndRender() {
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
-  // Get active progression stage boosts
   const activeStageIdx = categoryStages[currentTab] || 0;
   const stageStats = (progressionStages[currentTab] && progressionStages[currentTab][activeStageIdx]) || { luck: 1, bulk: 1, speed: 1, clone: 1 };
 
@@ -370,7 +378,6 @@ function calculateAndRender() {
     const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
     const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
 
-    // Apply potion multipliers + stage multipliers
     finalLuck = rawLuck * luckMult * stageStats.luck;
 
     const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
@@ -422,8 +429,6 @@ function calculateAndRender() {
 
     const dropProbability = 1 / Math.max(1, effectiveChance);
     const estimatedYieldPerSec = actualRPS * dropProbability * Math.max(1, cloneVal);
-    
-    // Time to X Runes calculation
     const secondsForTarget = estimatedYieldPerSec > 0 ? (targetRuneCount / estimatedYieldPerSec) : Infinity;
 
     const card = document.createElement('div');
@@ -518,20 +523,6 @@ function loadData() {
 
 document.addEventListener('DOMContentLoaded', function() {
   loadData();
-  
-  // Inject target rune quantity field into the DOM if it exists or create a control panel section
-  const controlsPanel = document.querySelector('.controls-panel') || document.body;
-  if (!document.getElementById('targetRuneGroup')) {
-    const targetGroup = document.createElement('div');
-    targetGroup.id = 'targetRuneGroup';
-    targetGroup.className = 'control-group';
-    targetGroup.style.marginTop = '10px';
-    targetGroup.innerHTML = 
-      '<label for="targetRuneInput">Target Rune Quantity (X):</label>' +
-      '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 100%; padding: 6px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px;">';
-    controlsPanel.appendChild(targetGroup);
-  }
-
   renderCategoryTabs();
 
   document.querySelectorAll('input, select').forEach(function(input) {
