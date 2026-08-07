@@ -260,21 +260,20 @@ function formatTime(totalSeconds) {
 
 function setupControlPanel() {
   let panel = document.getElementById('dashboardControlPanel');
-  if (!panel) {
+  const grid = document.getElementById('runeGrid');
+  
+  if (!panel && grid && grid.parentNode) {
     panel = document.createElement('div');
     panel.id = 'dashboardControlPanel';
     panel.style.cssText = 'background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px;';
-    
-    const tabsContainer = document.querySelector('.tabs-container');
-    if (tabsContainer && tabsContainer.parentNode) {
-      tabsContainer.parentNode.insertBefore(panel, tabsContainer);
-    }
+    grid.parentNode.insertBefore(panel, grid);
   }
+  
+  if (!panel) return;
 
   const stages = progressionStages[currentTab] || [];
   const currentStageNum = categoryStages[currentTab] || 0;
 
-  // Build stage buttons row acting as pages
   let stageButtonsHTML = '';
   stages.forEach(function(st) {
     const isActive = st.stage === currentStageNum;
@@ -288,7 +287,7 @@ function setupControlPanel() {
   panel.innerHTML = 
     '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">' +
       '<div style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
-        runeCategories[currentTab] + ' Progression Stages:' +
+        (runeCategories[currentTab] || 'Rune') + ' Progression Stages:' +
       '</div>' +
       '<div style="display: flex; align-items: center; gap: 8px;">' +
         '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
@@ -299,7 +298,6 @@ function setupControlPanel() {
       stageButtonsHTML +
     '</div>';
 
-  // Attach event listeners to stage page buttons
   panel.querySelectorAll('.stage-page-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       categoryStages[currentTab] = parseInt(btn.getAttribute('data-stage'), 10) || 0;
@@ -527,6 +525,7 @@ function loadData() {
 document.addEventListener('DOMContentLoaded', function() {
   loadData();
   renderCategoryTabs();
+  setupControlPanel();
 
   document.querySelectorAll('input, select').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
@@ -545,5 +544,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calculateAndRender();
 });
-
-```
