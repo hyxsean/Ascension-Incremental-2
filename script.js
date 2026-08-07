@@ -9,61 +9,6 @@ const runeCategories = {};
 const runeDatabase = {};
 const categoryStages = { basic: 0, essential: 0, desert: 0, magma: 0 };
 
-const progressionStages = {
-  basic: [
-    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "2.50K Flux", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "10.00K Flux", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "50.00K Flux", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "1.00M Flux", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "250.00M Flux", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 1.0 },
-    { stage: 6, req: "10.00B Flux", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 2.0 },
-    { stage: 7, req: "500.00B Flux", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 2.0 },
-    { stage: 8, req: "25.00T Flux", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 3.0 },
-    { stage: 9, req: "1.50Qd Flux", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 4.0 },
-    { stage: 10, req: "100.00Qd Flux", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 5.0 }
-  ],
-  essential: [
-    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "2.50K Particles", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "100.00K Particles", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "50.00M Particles", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "250.00M Particles", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "2.50B Particles", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 1.0 },
-    { stage: 6, req: "100.00B Particles", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 2.0 },
-    { stage: 7, req: "5.00T Particles", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 2.0 },
-    { stage: 8, req: "250.00T Particles", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 3.0 },
-    { stage: 9, req: "15.00Qd Particles", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 4.0 },
-    { stage: 10, req: "1.00Qn Particles", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 5.0 }
-  ],
-  desert: [
-    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "100.00K Cactus", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "1.00Qn Cactus", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "10.00Qn Cactus", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "100.00Qn Cactus", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "1.00Sx Cactus", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 1.0 },
-    { stage: 6, req: "10.00Sx Cactus", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 2.0 },
-    { stage: 7, req: "100.00Sx Cactus", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 2.0 },
-    { stage: 8, req: "1.00Sp Cactus", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 3.0 },
-    { stage: 9, req: "10.00Sp Cactus", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 4.0 },
-    { stage: 10, req: "1.00Oc Cactus", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 5.0 }
-  ],
-  magma: [
-    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "100.00K Fire", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "1.00Qn Fire", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "10.00Qn Fire", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "100.00Qn Fire", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "1.00Sx Fire", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 1.0 },
-    { stage: 6, req: "10.00Sx Fire", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 2.0 },
-    { stage: 7, req: "100.00Sx Fire", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 2.0 },
-    { stage: 8, req: "1.00Sp Fire", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 3.0 },
-    { stage: 9, req: "10.00Sp Fire", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 4.0 },
-    { stage: 10, req: "1.00Oc Fire", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 5.0 }
-  ]
-};
-
 const buffColorMap = {
   "snow": "#38bdf8", "points": "#ffffff", "flux": "#fbbf24", "voltage": "#f87171",
   "damage": "#f87171", "fire": "#f87171", "particles": "#38bdf8", "tokens": "#38bdf8",
