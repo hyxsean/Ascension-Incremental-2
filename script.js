@@ -26,7 +26,7 @@ const buffColorMap = {
   "shards": "#c084fc",
   "magma": "#fb923c",
   "sand": "#fbbf24",
-  "snow": "#ffffff"
+  "snow": "#ffffff",
 };
 
 function registerCategory(id, displayName) {
