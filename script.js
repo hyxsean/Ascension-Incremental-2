@@ -242,8 +242,9 @@ function calculateAndRender() {
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
-  // Toggle Basic vs Advanced Visibility
+// Toggle Basic vs Advanced Visibility
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
+  if (groupLuck) groupLuck.style.display = isAdvanced ? 'flex' : 'none';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
   if (groupBulk) groupBulk.style.display = isAdvanced ? 'flex' : 'none';
   if (groupClone) groupClone.style.display = isAdvanced ? 'flex' : 'none';
