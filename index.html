@@ -29,18 +29,20 @@
       <section class="panel-section">
         <h2 class="section-title">Player Statistics</h2>
         <div class="inputs-grid">
+          
           <div class="input-group">
             <label for="luckInput">Rune Luck</label>
             <input type="text" id="luckInput" value="738.01Qn">
           </div>
 
-          <!-- Basic Mode Input: Direct RPS -->
+          <!-- Basic Mode Input: Direct RPS (Image 6 Style) -->
           <div class="input-group" id="groupRps">
-            <label for="rpsInput">RPS (Runes/sec)</label>
-            <input type="text" id="rpsInput" value="1.58Sp">
+            <label for="rpsInput">My Current Rate (RPS)</label>
+            <input type="text" id="rpsInput" value="32.27De">
+            <span class="parsed-rate-text" id="parsedRateDisplay">Parsed Rate: 32.27De RPS</span>
           </div>
 
-          <!-- Advanced Mode Inputs: Speed & Bulk (Hidden by Default) -->
+          <!-- Advanced Mode Inputs: Speed & Bulk (Hidden in Basic) -->
           <div class="input-group" id="groupSpeed" style="display: none;">
             <label for="speedInput">Rune Speed</label>
             <input type="text" id="speedInput" value="139.1M">
@@ -68,13 +70,14 @@
             <label class="toggle-switch">
               <input type="checkbox" id="advancedToggle">
               <span class="toggle-slider"></span>
-              <span class="toggle-label">Advanced</span>
+              <span class="toggle-label">Advanced Mode</span>
             </label>
           </div>
+
         </div>
       </section> 
 
-      <!-- Section: Active Boosts & Potions (Hidden by default in Basic Mode) -->
+      <!-- Section: Active Boosts & Potions (Only visible in Advanced Mode) -->
       <section class="panel-section" id="potionsSection" style="display: none;">
         <h2 class="section-title">Active Boosts & Potions</h2>
         <div class="potions-grid">
@@ -115,7 +118,7 @@
           <span class="metric-label">Effective RPS</span>
           <span class="metric-value value-actual" id="actualRpsDisplay">0</span>
         </div>
-        <div class="summary-metric">
+        <div class="summary-metric" id="baseRpsMetric" style="display: none;">
           <span class="metric-label">Base RPS</span>
           <span class="metric-value" id="baseRpsDisplay">0</span>
         </div>
