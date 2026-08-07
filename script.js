@@ -261,35 +261,34 @@ function calculateAndRender() {
     const secondsForOne = estimatedYieldPerSec > 0 ? (1 / estimatedYieldPerSec) : Infinity;
 
     const card = document.createElement('div');
-    card.className = `rune-card ${rune.colorClass}`;
+    card.className = "rune-card " + rune.colorClass;
 
     let buffsHTML = rune.buffs.map(buff => 
-      `<div class="buff-item" style="color: ${buff.color}">
-        ${buff.text} <span class="tag-max">[MAX]</span>
-       </div>`
+      '<div class="buff-item" style="color: ' + buff.color + '">' +
+        buff.text + ' <span class="tag-max">[MAX]</span>' +
+      '</div>'
     ).join('');
 
     let warningHTML = "";
     if (rune.type === "Deity") {
       const penaltyRatio = (rune.luckOnChance / rune.baseChance).toFixed(1);
       warningHTML = globalLuckToggle 
-        ? `<div class="warning-text" style="color: #f87171">Luck Active: Penalized ${penaltyRatio}x<br><strong>TURN OFF LUCK</strong></div>`
-        : `<div class="warning-text" style="color: #34d399">LUCK DISABLED<br><strong>OPTIMAL CHANCE ACTIVE</strong></div>`;
+        ? '<div class="warning-text" style="color: #f87171">Luck Active: Penalized ' + penaltyRatio + 'x<br><strong>TURN OFF LUCK</strong></div>'
+        : '<div class="warning-text" style="color: #34d399">LUCK DISABLED<br><strong>OPTIMAL CHANCE ACTIVE</strong></div>';
     }
 
-    card.innerHTML = `
-      <div>
-        <div class="rune-title">${rune.name}</div>
-        <div class="rune-category">[${rune.type}]</div>
-        <div class="time-badge">Est. Time: ${formatTime(secondsForOne)}</div>
-        <div class="divider"></div>
-        <div class="buffs-container">${buffsHTML}</div>
-      </div>
-      <div>
-        ${warningHTML}
-        <div class="rune-chance">Chance: 1 / ${formatNumber(effectiveChance)}</div>
-      </div>
-    `;
+    card.innerHTML = 
+      '<div>' +
+        '<div class="rune-title">' + rune.name + '</div>' +
+        '<div class="rune-category">[' + rune.type + ']</div>' +
+        '<div class="time-badge">Est. Time: ' + formatTime(secondsForOne) + '</div>' +
+        '<div class="divider"></div>' +
+        '<div class="buffs-container">' + buffsHTML + '</div>' +
+      '</div>' +
+      '<div>' +
+        warningHTML +
+        '<div class="rune-chance">Chance: 1 / ' + formatNumber(effectiveChance) + '</div>' +
+      '</div>';
 
     grid.appendChild(card);
   });
