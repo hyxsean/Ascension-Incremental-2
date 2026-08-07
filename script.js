@@ -297,30 +297,29 @@ function calculateAndRender() {
   saveData();
 }
 
-// Event Listeners
-document.querySelectorAll('input').forEach(input => {
-  input.addEventListener('input', calculateAndRender);
-  input.addEventListener('change', calculateAndRender);
-});
-
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentTab = e.target.getAttribute('data-tab');
-    calculateAndRender();
+/* Initialize listeners and state after DOM is ready */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calculateAndRender);
+    input.addEventListener('change', calculateAndRender);
   });
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTab = btn.getAttribute('data-tab');
+      calculateAndRender();
+    });
+  });
+
+  document.getElementById('resetBtn')?.addEventListener('click', () => {
+    if (confirm("Reset all calculator stats to defaults?")) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+
+  loadData();
+  calculateAndRender();
 });
-
-document.getElementById('resetBtn')?.addEventListener('click', () => {
-  if (confirm("Reset all calculator stats to defaults?")) {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
-  }
-});
-
-// Initialization
-loadData();
-calculateAndRender();
-
-```
