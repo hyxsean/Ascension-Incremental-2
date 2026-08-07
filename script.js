@@ -10,8 +10,9 @@ const runeDatabase = {};
 
 // Color palette map for automatic buff text coloring
 const buffColorMap = {
+  "snow": "#38bdf8",
   "points": "#ffffff",
-  "flux": "#FFD700",
+  "flux": "#fbbf24",
   "voltage": "#f87171",
   "damage": "#f87171",
   "fire": "#f87171",
@@ -25,8 +26,7 @@ const buffColorMap = {
   "plasma": "#c084fc",
   "shards": "#c084fc",
   "magma": "#fb923c",
-  "sand": "#fbbf24",
-  "snow": "#ffffff",
+  "sand": "#fbbf24"
 };
 
 function registerCategory(id, displayName) {
