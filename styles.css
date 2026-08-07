@@ -1,459 +1,450 @@
-const STORAGE_KEY = 'ascension_ii_optimizer_data';
-let currentTab = '';
-
-// ============================================================================
-// 1. MODULAR REGISTRATION SYSTEM
-// ============================================================================
-
-const runeCategories = {};
-const runeDatabase = {};
-
-const buffColorMap = {
-  "snow": "#38bdf8",
-  "points": "#ffffff",
-  "flux": "#fbbf24",
-  "voltage": "#f87171",
-  "damage": "#f87171",
-  "fire": "#f87171",
-  "particles": "#38bdf8",
-  "tokens": "#38bdf8",
-  "pulse": "#34d399",
-  "cactus": "#34d399",
-  "luck": "#34d399",
-  "bulk": "#fbbf24",
-  "speed": "#38bdf8",
-  "plasma": "#c084fc",
-  "shards": "#c084fc",
-  "magma": "#fb923c",
-  "sand": "#fbbf24"
-};
-
-function registerCategory(id, displayName) {
-  runeCategories[id] = displayName;
-  runeDatabase[id] = [];
-  if (!currentTab) currentTab = id;
+:root {
+  --bg-dark: #0b0f19;
+  --panel-bg: #111827;
+  --card-bg: #1f2937;
+  --card-inner: #111827;
+  --accent-blue: #3b82f6;
+  --accent-purple: #a855f7;
+  --accent-cyan: #38bdf8;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
 }
 
-function addRune(categoryId, config) {
-  if (!runeDatabase[categoryId]) {
-    console.error("Category '" + categoryId + "' does not exist. Register it first using registerCategory().");
-    return;
-  }
-
-  const processedBuffs = (config.buffs || []).map(function(b) {
-    if (typeof b === 'object' && b.text) return b;
-    
-    let color = "#ffffff";
-    const lower = String(b).toLowerCase();
-    
-    for (let key in buffColorMap) {
-      if (lower.includes(key)) {
-        color = buffColorMap[key];
-        break;
-      }
-    }
-    return { text: String(b), color: color };
-  });
-
-  const baseChance = config.chance || config.baseChance || 1;
-  const isDeity = config.type === "Deity";
-
-  const rune = {
-    name: config.name || "UNKNOWN",
-    type: config.type || "Basic",
-    baseChance: baseChance,
-    luckOnChance: config.luckOnChance || (isDeity ? baseChance * 10 : baseChance),
-    colorClass: "color-" + (config.color || "white"),
-    buffs: processedBuffs
-  };
-
-  runeDatabase[categoryId].push(rune);
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-// ============================================================================
-// 2. DEFINE YOUR DATABASE
-// ============================================================================
-
-registerCategory("basic", "Basic Rune");
-registerCategory("essential", "Essential Rune");
-registerCategory("desert", "Desert Rune");
-registerCategory("magma", "Magma Rune");
-
-// --- BASIC SET ---
-addRune("basic", { name: "COMMON", chance: 2, color: "white", buffs: ["Points 4x"] });
-addRune("basic", { name: "UNCOMMON", chance: 3, color: "green", buffs: ["Points 10x"] });
-addRune("basic", { name: "RARE", chance: 15, color: "blue", buffs: ["Flux 5x"] });
-addRune("basic", { name: "EPIC", chance: 200, color: "purple", buffs: ["Points 20x", "Flux 10x", "Voltage 2x"] });
-addRune("basic", { name: "LEGENDARY", chance: 5000, color: "yellow", buffs: ["Points 25x", "Shards 5x", "Damage 2x", "Attack Speed 1.25x"] });
-addRune("basic", { name: "MYTHIC", chance: 100000, color: "red", buffs: ["Points 100x", "Rune Bulk 2x", "Rune Luck 2.5x"] });
-addRune("basic", { name: "KING", type: "Deity", chance: 20000000, luckOnChance: 132567400, color: "cyan", buffs: ["Particles 10x", "Rune Bulk 2.5x"] });
-addRune("basic", { name: "EMPEROR", type: "Deity", chance: 500000000, luckOnChance: 3314000000, color: "cyan", buffs: ["Points 100x", "Particles 25x", "Rune Bulk 3x", "Rune Speed 3x"] });
-addRune("basic", { name: "OVERLORD", type: "Deity", chance: 90.52e15, luckOnChance: 600e15, color: "pink", buffs: ["Points 1Kx", "Sacrifice Points 2.5x", "Rune Bulk 50x", "Tokens 4x"] });
-
-// --- ESSENTIAL SET ---
-addRune("essential", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
-addRune("essential", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
-addRune("essential", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
-addRune("essential", { name: "OVERCLOCKED", chance: 1000000, color: "red", buffs: ["Points 100x", "Particles 10x"] });
-addRune("essential", { name: "NEURAL", chance: 200000000, color: "orange", buffs: ["Voltage 3x", "Plasma 4x"] });
-addRune("essential", { name: "QUANTUM", chance: 500000000000, color: "pink", buffs: ["Particles 3x", "Rune Bulk 2x"] });
-addRune("essential", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luckOnChance: 6e9, color: "green", buffs: ["Points 5Kx", "Plasma 5x", "Pulse Button 3x", "Sacrifice Points 2x"] });
-addRune("essential", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
-addRune("essential", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
-
-// --- DESERT SET ---
-addRune("desert", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
-addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
-addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
-addRune("desert", { name: "BRINE", chance: 200000000000000, color: "green", buffs: ["Cactus 25x", "Sand 2x", "Rune Luck 4x"] });
-addRune("desert", { name: "RUST", chance: 10000000000000000, color: "brown", buffs: ["Cactus 5x", "Sand 5x", "Rune Luck 5x"] });
-addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow 32.83Kx [∞]"] });
-addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire 71.59x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
-addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
-addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
-
-// --- MAGMA SET ---
-addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
-addRune("magma", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
-addRune("magma", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
-addRune("magma", { name: "ASH", chance: 1e21, color: "white", buffs: ["Fire 100x", "Rune Bulk 5x", "Rune Luck 5x"] });
-addRune("magma", { name: "BLAZE", chance: 1e25, color: "pink", buffs: ["Cactus 10x", "Fire 3x", "Rune Luck 10x"] });
-addRune("magma", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 25x", "Fire 10x", "Magma 3x", "Rune Luck 5x"] });
-addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
-addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
-
-// ============================================================================
-// 3. UTILITIES & MATH ENGINE
-// ============================================================================
-
-const suffixesMap = {
-  "K": 1e3, "M": 1e6, "B": 1e9, "T": 1e12, "Qd": 1e15, "Qn": 1e18, "Sx": 1e21, "Sp": 1e24, "Oc": 1e27, "No": 1e30,
-  "De": 1e33, "UDe": 1e36, "DDe": 1e39, "TDe": 1e42, "QdDe": 1e45, "QnDe": 1e48, "SxDe": 1e51, "SpDe": 1e54, "OcDe": 1e57, "NoDe": 1e60,
-  "Vt": 1e63, "UVt": 1e66, "DVt": 1e69, "TVt": 1e72, "QdVt": 1e75, "QnVt": 1e78, "SxVt": 1e81, "SpVt": 1e84, "OcVt": 1e87, "NoVt": 1e90,
-  "Tg": 1e93, "UTg": 1e96, "DTg": 1e99, "TTg": 1e102, "QdTg": 1e105, "QnTg": 1e108, "SxTg": 1e111, "SpTg": 1e114, "OcTg": 1e117, "NoTg": 1e120,
-  "qg": 1e123, "Uqg": 1e126, "Dqg": 1e129, "Tqg": 1e132, "Qdqg": 1e135, "Qnqg": 1e138, "Sxqg": 1e141, "Spqg": 1e144, "Ocqg": 1e147, "Noqg": 1e150,
-  "Qg": 1e153, "UQg": 1e156, "DQg": 1e159, "TQg": 1e162, "QdQg": 1e165, "QnQg": 1e168, "SxQg": 1e171, "SpQg": 1e174, "OcQg": 1e177, "NoQg": 1e180,
-  "sg": 1e183, "Usg": 1e186, "Dsg": 1e189, "Tsg": 1e192, "Qdsg": 1e195, "Qnsg": 1e198, "Sxsg": 1e201, "Spsg": 1e204, "Ocsg": 1e207, "Nosg": 1e210,
-  "Sg": 1e213, "USg": 1e216, "DSg": 1e219, "TSg": 1e222, "QdSg": 1e225, "QnSg": 1e228, "SxSg": 1e231, "SpSg": 1e234, "OcSg": 1e237, "NoSg": 1e240,
-  "Og": 1e243, "UOg": 1e246, "DOg": 1e249, "TOg": 1e252, "QdOg": 1e255, "QnOg": 1e258, "SxOg": 1e261, "SpOg": 1e264, "OcOg": 1e267, "NoOg": 1e270,
-  "Ng": 1e273, "UNg": 1e276, "DNg": 1e279, "TNg": 1e282, "QdNg": 1e285, "QnNg": 1e288, "SxNg": 1e291, "SpNg": 1e294, "OcNg": 1e297, "NoNg": 1e300,
-  "Ce": 1e303, "UCe": 1e306
-};
-
-const suffixesList = Object.keys(suffixesMap);
-
-function getVal(id, fallback) {
-  const el = document.getElementById(id);
-  return el ? el.value : (fallback !== undefined ? fallback : '');
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.5;
+  padding-bottom: 40px;
 }
 
-function getChecked(id, fallback) {
-  const el = document.getElementById(id);
-  return el ? el.checked : (fallback !== undefined ? fallback : false);
+/* Header */
+.app-header {
+  background: #111827;
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
 }
 
-function setVal(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.value = val;
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-function setChecked(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.checked = val;
+.brand .game-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-function setText(id, text) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = text;
+.brand h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
 }
 
-function parseFormattedNumber(inputStr) {
-  if (typeof inputStr !== 'string') inputStr = String(inputStr);
-  inputStr = inputStr.trim().replace(/,/g, '');
-  if (!inputStr) return 0;
-
-  const match = inputStr.match(/^([0-9.]+)\s*([a-zA-Z]+)?$/);
-  if (!match) return parseFloat(inputStr) || 0;
-
-  const val = parseFloat(match[1]);
-  const suffix = match[2];
-
-  if (!suffix) return val || 0;
-  if (suffixesMap[suffix]) return val * suffixesMap[suffix];
-
-  const lower = suffix.toLowerCase();
-  const key = suffixesList.find(function(k) { return k.toLowerCase() === lower; });
-  return key ? val * suffixesMap[key] : (val || 0);
+.reset-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-function formatNumber(num) {
-  if (num === Infinity || isNaN(num)) return "∞";
-  if (num < 1000) return num.toFixed(2).replace(/\.00$/, '');
-
-  const exp = Math.floor(Math.log10(num));
-  const suffixIdx = Math.floor(exp / 3) - 1;
-
-  if (suffixIdx >= suffixesList.length) return num.toExponential(2);
-  if (suffixIdx < 0) return num.toFixed(2).replace(/\.00$/, '');
-
-  const divisor = Number("1e" + ((suffixIdx + 1) * 3));
-  return (num / divisor).toFixed(2).replace(/\.00$/, '') + suffixesList[suffixIdx];
+.reset-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #f87171;
 }
 
-function formatTime(totalSeconds) {
-  if (totalSeconds === Infinity || isNaN(totalSeconds)) return "∞";
-  if (totalSeconds < 1) return "Instant";
-
-  const secondsInYear = 31536000;
-  const years = totalSeconds / secondsInYear;
-
-  if (years >= 1) {
-    if (years >= 1000) return formatNumber(years) + " yrs";
-    const y = Math.floor(years);
-    const d = Math.floor((totalSeconds % secondsInYear) / 86400);
-    return y + "y " + d + "d";
-  }
-
-  const d = Math.floor(totalSeconds / 86400);
-  const h = Math.floor((totalSeconds % 86400) / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = Math.floor(totalSeconds % 60);
-
-  const parts = [];
-  if (d > 0) parts.push(d + "d");
-  if (h > 0 || d > 0) parts.push(h + "h");
-  if (m > 0 || h > 0 || d > 0) parts.push(m + "m");
-  if (d === 0) parts.push(s + "s");
-
-  return parts.join(' ');
+/* Layout Container */
+.container {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
 }
 
-// ============================================================================
-// 4. RENDERING & UI GENERATION
-// ============================================================================
-
-function renderCategoryTabs() {
-  const container = document.querySelector('.tabs-container') || document.querySelector('.tabs');
-  if (!container) return;
-
-  container.innerHTML = "";
-  
-  Object.keys(runeCategories).forEach(function(catId) {
-    const btn = document.createElement('button');
-    btn.className = "tab-btn" + (catId === currentTab ? " active" : "");
-    btn.setAttribute('data-tab', catId);
-    btn.textContent = runeCategories[catId];
-
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      currentTab = catId;
-      calculateAndRender();
-    });
-
-    container.appendChild(btn);
-  });
+/* Calculator Controls Panel */
+.calculator-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
 }
 
-function calculateAndRender() {
-  const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
-  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
-  const globalLuckToggle = getChecked('luckToggle', true);
-  const isAdvanced = getChecked('advancedToggle', false);
-
-  // Show / Hide elements based on mode
-  const groupRps = document.getElementById('groupRps');
-  const groupSpeed = document.getElementById('groupSpeed');
-  const groupBulk = document.getElementById('groupBulk');
-  const potionsSection = document.getElementById('potionsSection');
-  const baseRpsMetric = document.getElementById('baseRpsMetric');
-
-  if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
-  if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
-  if (groupBulk) groupBulk.style.display = isAdvanced ? 'flex' : 'none';
-  if (potionsSection) potionsSection.style.display = isAdvanced ? 'block' : 'none';
-  if (baseRpsMetric) baseRpsMetric.style.display = isAdvanced ? 'flex' : 'none';
-
-  let baseRPS = 0;
-  let actualRPS = 0;
-  let finalLuck = rawLuck;
-
-  if (isAdvanced) {
-    // Advanced Mode: calculate using Speed x Bulk x Potions
-    const potServer = getChecked('potServer', false);
-    const potLuck = getChecked('potLuck', true);
-    const potSpeed = getChecked('potSpeed', true);
-    const potBulk = getChecked('potBulk', true);
-
-    const serverMult = potServer ? 1.25 : 1.0;
-    const luckMult = (potLuck ? 2.0 : 1.0) * serverMult;
-    const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
-    const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
-
-    finalLuck = rawLuck * luckMult;
-
-    const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
-    const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
-
-    const finalSpeed = rawSpeed * speedMult;
-    const finalBulk = rawBulk * bulkMult;
-
-    baseRPS = rawSpeed * rawBulk;
-    actualRPS = finalSpeed * finalBulk;
-  } else {
-    // Basic Mode: direct single input without potion calculations
-    const rawRPS = parseFormattedNumber(getVal('rpsInput', '0'));
-    baseRPS = rawRPS;
-    actualRPS = rawRPS;
-    finalLuck = rawLuck;
-
-    // Update Image 6 parsed rate text readout
-    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
-  }
-
-  setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
-  setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
-  setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
-
-  const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
-  const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
-  const targetVal = parseFormattedNumber(getVal('targetInput', '0'));
-
-  const needed = targetVal - currentVal;
-  if (incomePerSec <= 0) {
-    setText('goalTimeDisplay', "N/A (0 Income)");
-  } else if (needed <= 0) {
-    setText('goalTimeDisplay', "Goal Reached!");
-  } else {
-    const seconds = needed / incomePerSec;
-    setText('goalTimeDisplay', formatTime(seconds));
-  }
-
-  const grid = document.getElementById('runeGrid');
-  if (!grid) return;
-  grid.innerHTML = "";
-
-  const activeSet = runeDatabase[currentTab] || [];
-
-  activeSet.forEach(function(rune) {
-    let effectiveChance = rune.baseChance;
-
-    if (rune.type === "Deity") {
-      effectiveChance = globalLuckToggle ? rune.luckOnChance : rune.baseChance;
-    } else {
-      let activeLuck = globalLuckToggle ? finalLuck : 1;
-      effectiveChance = rune.baseChance / Math.max(1, activeLuck);
-    }
-
-    const dropProbability = 1 / Math.max(1, effectiveChance);
-    const estimatedYieldPerSec = actualRPS * dropProbability * Math.max(1, cloneVal);
-    const secondsForOne = estimatedYieldPerSec > 0 ? (1 / estimatedYieldPerSec) : Infinity;
-
-    const card = document.createElement('div');
-    card.className = "rune-card " + rune.colorClass;
-
-    let buffsHTML = rune.buffs.map(function(buff) { 
-      return '<div class="buff-item" style="color: ' + buff.color + '">' +
-        buff.text + ' <span class="tag-max">[MAX]</span>' +
-      '</div>';
-    }).join('');
-
-    let warningHTML = "";
-    if (rune.type === "Deity") {
-      const penaltyRatio = (rune.luckOnChance / rune.baseChance).toFixed(1);
-      warningHTML = globalLuckToggle 
-        ? '<div class="warning-text" style="color: #f87171">Luck Active: Penalized ' + penaltyRatio + 'x<br><strong>TURN OFF LUCK</strong></div>'
-        : '<div class="warning-text" style="color: #34d399">LUCK DISABLED<br><strong>OPTIMAL CHANCE ACTIVE</strong></div>';
-    }
-
-    card.innerHTML = 
-      '<div>' +
-        '<div class="rune-title">' + rune.name + '</div>' +
-        '<div class="rune-category">[' + rune.type + ']</div>' +
-        '<div class="time-badge">Est. Time: ' + formatTime(secondsForOne) + '</div>' +
-        '<div class="divider"></div>' +
-        '<div class="buffs-container">' + buffsHTML + '</div>' +
-      '</div>' +
-      '<div>' +
-        warningHTML +
-        '<div class="rune-chance">Chance: 1 / ' + formatNumber(effectiveChance) + '</div>' +
-      '</div>';
-
-    grid.appendChild(card);
-  });
-
-  saveData();
+.panel-section {
+  margin-bottom: 20px;
 }
 
-function saveData() {
-  const data = {
-    luckInput: getVal('luckInput', '738.01Qn'),
-    rpsInput: getVal('rpsInput', '32.27De'),
-    speedInput: getVal('speedInput', '139.1M'),
-    bulkInput: getVal('bulkInput', '11.38Sp'),
-    cloneInput: getVal('cloneInput', '8'),
-    luckToggle: getChecked('luckToggle', true),
-    advancedToggle: getChecked('advancedToggle', false),
-    potServer: getChecked('potServer', false),
-    potLuck: getChecked('potLuck', true),
-    potSpeed: getChecked('potSpeed', true),
-    potBulk: getChecked('potBulk', true),
-    incomeInput: getVal('incomeInput', '4.6T'),
-    currentInput: getVal('currentInput', '900Qd'),
-    targetInput: getVal('targetInput', '2Qn'),
-    currentTab: currentTab
-  };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-blue);
+  margin-bottom: 12px;
+  border-left: 3px solid var(--accent-blue);
+  padding-left: 8px;
 }
 
-function loadData() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
-
-  try {
-    const data = JSON.parse(raw);
-    if (data.luckInput !== undefined) setVal('luckInput', data.luckInput);
-    if (data.rpsInput !== undefined) setVal('rpsInput', data.rpsInput);
-    if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
-    if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
-    if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
-    if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
-    if (data.advancedToggle !== undefined) setChecked('advancedToggle', data.advancedToggle);
-    if (data.potServer !== undefined) setChecked('potServer', data.potServer);
-    if (data.potLuck !== undefined) setChecked('potLuck', data.potLuck);
-    if (data.potSpeed !== undefined) setChecked('potSpeed', data.potSpeed);
-    if (data.potBulk !== undefined) setChecked('potBulk', data.potBulk);
-    if (data.incomeInput !== undefined) setVal('incomeInput', data.incomeInput);
-    if (data.currentInput !== undefined) setVal('currentInput', data.currentInput);
-    if (data.targetInput !== undefined) setVal('targetInput', data.targetInput);
-
-    if (data.currentTab && runeDatabase[data.currentTab]) {
-      currentTab = data.currentTab;
-    }
-  } catch (e) {
-    console.error("Failed to load saved state:", e);
-  }
+/* Dynamic Grid for Player Statistics */
+.inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  align-items: flex-start;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadData();
-  renderCategoryTabs();
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
 
-  // Attach event listeners to all inputs & switches
-  document.querySelectorAll('input').forEach(function(input) {
-    input.addEventListener('input', calculateAndRender);
-    input.addEventListener('change', calculateAndRender);
-  });
+.input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
 
-  const resetBtn = document.getElementById('resetBtn');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', function() {
-      if (confirm("Reset all calculator stats to defaults?")) {
-        localStorage.removeItem(STORAGE_KEY);
-        location.reload();
-      }
-    });
-  }
+.input-group input[type="text"] {
+  background: #000000;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: #ffffff;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
 
-  calculateAndRender();
-});
+.input-group input[type="text"]:focus {
+  border-color: var(--accent-blue);
+}
+
+/* Image 6 parsed rate text readout */
+.parsed-rate-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* Toggle Switch Styles */
+.toggle-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px; /* Aligns with input boxes */
+}
+
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  gap: 10px;
+  background: #000000;
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.toggle-slider {
+  width: 36px;
+  height: 20px;
+  background-color: var(--border-color);
+  border-radius: 20px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: white;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.2s ease;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--accent-blue);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(16px);
+}
+
+.toggle-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* Potions Section */
+.potions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.potion-card {
+  display: flex;
+  align-items: center;
+  background: #000000;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  gap: 12px;
+}
+
+.potion-card input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-blue);
+}
+
+.potion-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.potion-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.potion-buff {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.pot-server { color: #a855f7; }
+.pot-luck { color: #34d399; }
+.pot-speed { color: #38bdf8; }
+.pot-bulk { color: #fbbf24; }
+
+/* Stats Output Banner */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.summary-metric {
+  background: #000000;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.metric-value {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.value-actual { color: #c084fc; }
+.value-luck { color: #38bdf8; }
+
+/* Goal Time Box */
+.time-display-box {
+  margin-top: 12px;
+  background: #000000;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.time-highlight {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #34d399;
+}
+
+/* Category Navigation Tabs */
+.tabs-container, .tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #ffffff;
+}
+
+/* Runes Cards Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.rune-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 240px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rune-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Card Color Variants */
+.color-white { border-color: #e5e7eb; }
+.color-green { border-color: #22c55e; }
+.color-blue { border-color: #3b82f6; }
+.color-purple { border-color: #a855f7; }
+.color-yellow { border-color: #eab308; }
+.color-red { border-color: #ef4444; }
+.color-cyan { border-color: #06b6d4; }
+.color-orange { border-color: #f97316; }
+.color-pink { border-color: #ec4899; }
+.color-brown { border-color: #a16207; }
+
+.rune-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.rune-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.time-badge {
+  background: var(--card-inner);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #34d399;
+  text-align: center;
+  margin: 0 auto 12px auto;
+  width: fit-content;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-color);
+  margin-bottom: 12px;
+}
+
+.buffs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.buff-item {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tag-max {
+  font-size: 0.7rem;
+  color: #a855f7;
+  font-weight: 800;
+}
+
+.warning-text {
+  background: var(--card-inner);
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 0.75rem;
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.rune-chance {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-main);
+}
