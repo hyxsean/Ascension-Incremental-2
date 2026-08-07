@@ -7,7 +7,6 @@ let currentTab = '';
 
 const runeCategories = {};
 const runeDatabase = {};
-const categoryStages = { basic: 0, essential: 0, desert: 0, magma: 0 };
 
 const buffColorMap = {
   "snow": "#38bdf8", "points": "#ffffff", "flux": "#fbbf24", "voltage": "#f87171",
@@ -217,41 +216,6 @@ function setupControlPanel() {
   if (!panel) return;
   panel.style.display = 'flex';
 
-  const stages = progressionStages[currentTab] || [];
-  const currentStageNum = categoryStages[currentTab] || 0;
-
-  let stageButtonsHTML = '';
-  stages.forEach(function(st) {
-    const isActive = st.stage === currentStageNum;
-    const activeStyle = isActive 
-      ? 'background: #3b82f6; color: #ffffff; border-color: #60a5fa; font-weight: bold;' 
-      : 'background: #1e293b; color: #94a3b8; border-color: #334155;';
-    
-    stageButtonsHTML += '<button type="button" class="stage-page-btn" data-stage="' + st.stage + '" style="padding: 6px 12px; border-radius: 6px; border: 1px solid; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; ' + activeStyle + '">Stage ' + st.stage + ' (' + st.req + ')</button>';
-  });
-
-  panel.innerHTML = 
-    '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">' +
-      '<div style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
-        (runeCategories[currentTab] || 'Rune') + ' Progression Stages:' +
-      '</div>' +
-      '<div style="display: flex; align-items: center; gap: 8px;">' +
-        '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
-        '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 80px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
-      '</div>' +
-    '</div>' +
-    '<div style="display: flex; flex-wrap: wrap; gap: 6px;">' +
-      stageButtonsHTML +
-    '</div>';
-
-  panel.querySelectorAll('.stage-page-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      categoryStages[currentTab] = parseInt(btn.getAttribute('data-stage'), 10) || 0;
-      setupControlPanel();
-      calculateAndRender();
-    });
-  });
-
   const targetInputEl = document.getElementById('targetRuneInput');
   if (targetInputEl) {
     targetInputEl.addEventListener('input', calculateAndRender);
@@ -295,9 +259,6 @@ function calculateAndRender() {
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
-  const activeStageIdx = categoryStages[currentTab] || 0;
-  const stageStats = (progressionStages[currentTab] && progressionStages[currentTab][activeStageIdx]) || { luck: 1, bulk: 1, speed: 1, clone: 1 };
-
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
   const groupBulk = document.getElementById('groupBulk');
@@ -317,7 +278,6 @@ function calculateAndRender() {
   let baseRPS = 0;
   let actualRPS = 0;
   let finalLuck = rawLuck;
-  let cloneVal = baseCloneVal * stageStats.clone;
 
   if (isAdvanced) {
     const potServer = getChecked('potServer', false);
@@ -330,18 +290,14 @@ function calculateAndRender() {
     const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
     const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
 
-    finalLuck = rawLuck * luckMult * stageStats.luck;
-
     const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
     const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
 
     baseRPS = rawSpeed * rawBulk;
-    actualRPS = (rawSpeed * speedMult * stageStats.speed) * (rawBulk * bulkMult * stageStats.bulk);
+    actualRPS = (rawSpeed * speedMult) * (rawBulk * bulkMult);
   } else {
     actualRPS = parseFormattedNumber(getVal('rpsInput', '2000'));
     baseRPS = actualRPS;
-    finalLuck = rawLuck * stageStats.luck;
-    actualRPS = actualRPS * stageStats.speed * stageStats.bulk;
 
     setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS (Stage Boosted)');
   }
@@ -433,7 +389,6 @@ function saveData() {
     currentInput: getVal('currentInput', ''),
     targetInput: getVal('targetInput', ''),
     currentTab: currentTab,
-    categoryStages: categoryStages
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -459,10 +414,6 @@ function loadData() {
     if (data.incomeInput !== undefined) setVal('incomeInput', data.incomeInput);
     if (data.currentInput !== undefined) setVal('currentInput', data.currentInput);
     if (data.targetInput !== undefined) setVal('targetInput', data.targetInput);
-
-    if (data.categoryStages) {
-      Object.assign(categoryStages, data.categoryStages);
-    }
 
     if (data.currentTab && runeDatabase[data.currentTab]) {
       currentTab = data.currentTab;
