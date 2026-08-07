@@ -17,13 +17,15 @@ const suffixesMap = {
 
 const suffixesList = Object.keys(suffixesMap);
 
-/* Safe DOM Helper Functions */
-function getVal(id, fallback = '') {
-  return document.getElementById(id)?.value ?? fallback;
+/* Safe DOM Helpers */
+function getVal(id, fallback) {
+  const el = document.getElementById(id);
+  return el ? el.value : (fallback !== undefined ? fallback : '');
 }
 
-function getChecked(id, fallback = false) {
-  return document.getElementById(id)?.checked ?? fallback;
+function getChecked(id, fallback) {
+  const el = document.getElementById(id);
+  return el ? el.checked : (fallback !== undefined ? fallback : false);
 }
 
 function setVal(id, val) {
@@ -56,7 +58,7 @@ function parseFormattedNumber(inputStr) {
   if (suffixesMap[suffix]) return val * suffixesMap[suffix];
 
   const lower = suffix.toLowerCase();
-  const key = suffixesList.find(k => k.toLowerCase() === lower);
+  const key = suffixesList.find(function(k) { return k.toLowerCase() === lower; });
   return key ? val * suffixesMap[key] : (val || 0);
 }
 
@@ -85,7 +87,7 @@ function formatTime(totalSeconds) {
     if (years >= 1000) return formatNumber(years) + " yrs";
     const y = Math.floor(years);
     const d = Math.floor((totalSeconds % secondsInYear) / 86400);
-    return `${y}y ${d}d`;
+    return y + "y " + d + "d";
   }
 
   const d = Math.floor(totalSeconds / 86400);
@@ -94,10 +96,10 @@ function formatTime(totalSeconds) {
   const s = Math.floor(totalSeconds % 60);
 
   const parts = [];
-  if (d > 0) parts.push(`${d}d`);
-  if (h > 0 || d > 0) parts.push(`${h}h`);
-  if (m > 0 || h > 0 || d > 0) parts.push(`${m}m`);
-  if (d === 0) parts.push(`${s}s`);
+  if (d > 0) parts.push(d + "d");
+  if (h > 0 || d > 0) parts.push(h + "h");
+  if (m > 0 || h > 0 || d > 0) parts.push(m + "m");
+  if (d === 0) parts.push(s + "s");
 
   return parts.join(' ');
 }
@@ -148,7 +150,7 @@ const runeDatabase = {
   ]
 };
 
-/* Auto-Save & Load Functions */
+/* Auto-Save & Load */
 function saveData() {
   const data = {
     luckInput: getVal('luckInput', '738.01Qn'),
@@ -189,7 +191,7 @@ function loadData() {
 
     if (data.currentTab && runeDatabase[data.currentTab]) {
       currentTab = data.currentTab;
-      document.querySelectorAll('.tab-btn').forEach(btn => {
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
         btn.classList.toggle('active', btn.getAttribute('data-tab') === currentTab);
       });
     }
@@ -246,7 +248,7 @@ function calculateAndRender() {
 
   const activeSet = runeDatabase[currentTab] || [];
 
-  activeSet.forEach(rune => {
+  activeSet.forEach(function(rune) {
     let effectiveChance = rune.baseChance;
 
     if (rune.type === "Deity") {
@@ -263,11 +265,11 @@ function calculateAndRender() {
     const card = document.createElement('div');
     card.className = "rune-card " + rune.colorClass;
 
-    let buffsHTML = rune.buffs.map(buff => 
-      '<div class="buff-item" style="color: ' + buff.color + '">' +
+    let buffsHTML = rune.buffs.map(function(buff) { 
+      return '<div class="buff-item" style="color: ' + buff.color + '">' +
         buff.text + ' <span class="tag-max">[MAX]</span>' +
-      '</div>'
-    ).join('');
+      '</div>';
+    }).join('');
 
     let warningHTML = "";
     if (rune.type === "Deity") {
@@ -296,28 +298,31 @@ function calculateAndRender() {
   saveData();
 }
 
-/* Initialize listeners and state after DOM is ready */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('input').forEach(input => {
+/* Initialize Event Listeners */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('input').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
     input.addEventListener('change', calculateAndRender);
   });
 
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       currentTab = btn.getAttribute('data-tab');
       calculateAndRender();
     });
   });
 
-  document.getElementById('resetBtn')?.addEventListener('click', () => {
-    if (confirm("Reset all calculator stats to defaults?")) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  });
+  const resetBtn = document.getElementById('resetBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function() {
+      if (confirm("Reset all calculator stats to defaults?")) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+  }
 
   loadData();
   calculateAndRender();
