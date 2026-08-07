@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'ascension_ii_optimizer_data_v3';
+const STORAGE_KEY = 'ascension_ii_optimizer_data_v2';
 let currentTab = '';
 
 // ============================================================================
@@ -206,34 +206,6 @@ function formatTime(totalSeconds) {
 // 4. RENDERING & EVENTS
 // ============================================================================
 
-function setupControlPanel() {
-  let panel = document.getElementById('dashboardControlPanel');
-  const grid = document.getElementById('runeGrid');
-  
-  if (!panel && grid && grid.parentNode) {
-    panel = document.createElement('div');
-    panel.id = 'dashboardControlPanel';
-    panel.style.cssText = 'background: #0f172a; padding: 15px; border: 1px solid #1e293b; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;';
-    grid.parentNode.insertBefore(panel, grid);
-  }
-  
-  if (!panel) return;
-
-  panel.innerHTML = 
-    '<div style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
-      (runeCategories[currentTab] || 'Rune') + ' Settings' +
-    '</div>' +
-    '<div style="display: flex; align-items: center; gap: 8px;">' +
-      '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
-      '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 80px; padding: 5px 8px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; font-size: 0.9rem;">' +
-    '</div>';
-
-  const targetInputEl = document.getElementById('targetRuneInput');
-  if (targetInputEl) {
-    targetInputEl.addEventListener('input', calculateAndRender);
-  }
-}
-
 function renderCategoryTabs() {
   const container = document.querySelector('.tabs-container');
   if (!container) return;
@@ -249,20 +221,16 @@ function renderCategoryTabs() {
       document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       currentTab = catId;
-      setupControlPanel();
       calculateAndRender();
     });
 
     container.appendChild(btn);
   });
-  
-  setupControlPanel();
 }
 
 function calculateAndRender() {
   const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
-  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
-  const targetRuneCount = Math.max(1, parseFormattedNumber(getVal('targetRuneInput', '1')));
+  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1')); // <-- FIXED: Added cloneVal definition here
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
@@ -351,7 +319,7 @@ function calculateAndRender() {
 
     const dropProbability = 1 / Math.max(1, effectiveChance);
     const estimatedYieldPerSec = actualRPS * dropProbability * Math.max(1, cloneVal);
-    const secondsForTarget = estimatedYieldPerSec > 0 ? (targetRuneCount / estimatedYieldPerSec) : Infinity;
+    const secondsForOne = estimatedYieldPerSec > 0 ? (1 / estimatedYieldPerSec) : Infinity;
 
     const card = document.createElement('div');
     card.className = "rune-card " + rune.colorClass;
@@ -372,7 +340,7 @@ function calculateAndRender() {
       '<div>' +
         '<div class="rune-title">' + rune.name + '</div>' +
         '<div class="rune-category">[' + rune.type + ']</div>' +
-        '<div class="time-badge">Est. Time (' + targetRuneCount + 'x): ' + formatTime(secondsForTarget) + '</div>' +
+        '<div class="time-badge">Est. Time: ' + formatTime(secondsForOne) + '</div>' +
         '<div class="buffs-container">' + buffsHTML + '</div>' +
       '</div>' +
       '<div>' +
@@ -393,7 +361,6 @@ function saveData() {
     speedInput: getVal('speedInput', ''),
     bulkInput: getVal('bulkInput', ''),
     cloneInput: getVal('cloneInput', ''),
-    targetRuneInput: getVal('targetRuneInput', '1'),
     luckToggle: getChecked('luckToggle', true),
     advancedToggle: getChecked('advancedToggle', false),
     potServer: getChecked('potServer', false),
@@ -419,7 +386,6 @@ function loadData() {
     if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
     if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
     if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
-    if (data.targetRuneInput !== undefined) setVal('targetRuneInput', data.targetRuneInput);
     if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
     if (data.advancedToggle !== undefined) setChecked('advancedToggle', data.advancedToggle);
     if (data.potServer !== undefined) setChecked('potServer', data.potServer);
@@ -441,7 +407,6 @@ function loadData() {
 document.addEventListener('DOMContentLoaded', function() {
   loadData();
   renderCategoryTabs();
-  setupControlPanel();
 
   document.querySelectorAll('input').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
