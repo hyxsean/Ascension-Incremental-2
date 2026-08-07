@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ascension II — Rune Optimizer</title>
+  <title>Ascension 2 Calculator/title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,10 +14,10 @@
   <header class="app-header">
     <div class="header-content">
       <div class="brand">
-        <span class="game-tag">ASCENSION II</span>
-        <h1>RUNE OPTIMIZER</h1>
+        <span class="game-tag">Ascension Incremental 2</span>
+        <h1>Calculator</h1>
       </div>
-      <button id="resetBtn" class="reset-btn" title="Reset stats to default">Reset Defaults</button>
+      <!-- <button id="resetBtn" class="reset-btn" title="Reset stats to default">Reset Defaults</button> -->
     </div>
   </header>
 
@@ -25,7 +25,7 @@
     <!-- Controls Panel -->
     <div class="calculator-panel">
       
-      <!-- Section: Player Stats -->
+      <Section: Player Stats 
       <section class="panel-section">
         <h2 class="section-title">Player Statistics</h2>
         <div class="inputs-grid">
@@ -53,9 +53,26 @@
             </label>
           </div>
         </div>
-      </section>
+      </section> 
 
-      <!-- Section: Active Potions -->
+            <!-- Output Banner -->
+      <div class="stats-summary">
+        <div class="summary-metric">
+          <span class="metric-label">Effective RPS</span>
+          <span class="metric-value value-actual" id="actualRpsDisplay">0</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Base RPS</span>
+          <span class="metric-value" id="baseRpsDisplay">0</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Effective Luck</span>
+          <span class="metric-value value-luck" id="luckDisplay">1x</span>
+        </div>
+      </div>
+    </div>
+
+      <!-- Section: Active Potions 
       <section class="panel-section">
         <h2 class="section-title">Active Boosts & Potions</h2>
         <div class="potions-grid">
@@ -88,7 +105,7 @@
             </div>
           </label>
         </div>
-      </section>
+      </section> -->
 
       <!-- Section: Goal Calculator -->
       <section class="panel-section">
@@ -113,22 +130,7 @@
         </div>
       </section>
 
-      <!-- Output Banner -->
-      <div class="stats-summary">
-        <div class="summary-metric">
-          <span class="metric-label">Effective RPS</span>
-          <span class="metric-value value-actual" id="actualRpsDisplay">0</span>
-        </div>
-        <div class="summary-metric">
-          <span class="metric-label">Base RPS</span>
-          <span class="metric-value" id="baseRpsDisplay">0</span>
-        </div>
-        <div class="summary-metric">
-          <span class="metric-label">Effective Luck</span>
-          <span class="metric-value value-luck" id="luckDisplay">1x</span>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Navigation Tabs -->
     <nav class="tabs-container">
