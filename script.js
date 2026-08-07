@@ -2,7 +2,7 @@ const STORAGE_KEY = 'ascension_ii_optimizer_data_v3';
 let currentTab = '';
 
 // ============================================================================
-// 1. REGISTRATION SYSTEM & PROGRESSION STAGES
+// 1. REGISTRATION SYSTEM & PROGRESSION STAGES (NO BOOSTS, TEXT LABELS)
 // ============================================================================
 
 const runeCategories = {};
@@ -12,55 +12,55 @@ const categoryStages = { basic: 0, essential: 0, desert: 0, magma: 0 };
 const progressionStages = {
   basic: [
     { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "2.50K Flux", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "10.00K Flux", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "50.00K Flux", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "1.00M Flux", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "250.00M Flux", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
-    { stage: 6, req: "10.00B Flux", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
-    { stage: 7, req: "500.00B Flux", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
-    { stage: 8, req: "25.00T Flux", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
-    { stage: 9, req: "1.50Qd Flux", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
-    { stage: 10, req: "100.00Qd Flux", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+    { stage: 1, req: "2.50K Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "10.00K Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "50.00K Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 4, req: "1.00M Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 5, req: "250.00M Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 6, req: "10.00B Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 7, req: "500.00B Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 8, req: "25.00T Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 9, req: "1.50Qd Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 10, req: "100.00Qd Flux", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 }
   ],
   essential: [
     { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "2.50K Particles", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "100.00K Particles", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "50.00M Particles", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "250.00M Particles", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "2.50B Particles", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
-    { stage: 6, req: "100.00B Particles", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
-    { stage: 7, req: "5.00T Particles", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
-    { stage: 8, req: "250.00T Particles", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
-    { stage: 9, req: "15.00Qd Particles", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
-    { stage: 10, req: "1.00Qn Particles", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+    { stage: 1, req: "2.50K Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "100.00K Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "50.00M Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 4, req: "250.00M Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 5, req: "2.50B Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 6, req: "100.00B Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 7, req: "5.00T Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 8, req: "250.00T Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 9, req: "15.00Qd Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 10, req: "1.00Qn Particles", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 }
   ],
   desert: [
     { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "100.00K Cactus", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "1.00Qn Cactus", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "10.00Qn Cactus", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "100.00Qn Cactus", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "1.00Sx Cactus", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
-    { stage: 6, req: "10.00Sx Cactus", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
-    { stage: 7, req: "100.00Sx Cactus", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
-    { stage: 8, req: "1.00Sp Cactus", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
-    { stage: 9, req: "10.00Sp Cactus", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
-    { stage: 10, req: "1.00Oc Cactus", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+    { stage: 1, req: "100.00K Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "1.00Qn Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "10.00Qn Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 4, req: "100.00Qn Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 5, req: "1.00Sx Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 6, req: "10.00Sx Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 7, req: "100.00Sx Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 8, req: "1.00Sp Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 9, req: "10.00Sp Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 10, req: "1.00Oc Cactus", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 }
   ],
   magma: [
     { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 1, req: "100.00K Fire", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
-    { stage: 2, req: "1.00Qn Fire", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
-    { stage: 3, req: "10.00Qn Fire", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
-    { stage: 4, req: "100.00Qn Fire", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
-    { stage: 5, req: "1.00Sx Fire", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
-    { stage: 6, req: "10.00Sx Fire", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
-    { stage: 7, req: "100.00Sx Fire", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
-    { stage: 8, req: "1.00Sp Fire", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
-    { stage: 9, req: "10.00Sp Fire", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
-    { stage: 10, req: "1.00Oc Fire", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+    { stage: 1, req: "100.00K Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "1.00Qn Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "10.00Qn Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 4, req: "100.00Qn Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 5, req: "1.00Sx Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 6, req: "10.00Sx Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 7, req: "100.00Sx Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 8, req: "1.00Sp Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 9, req: "10.00Sp Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 10, req: "1.00Oc Fire", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 }
   ]
 };
 
@@ -281,13 +281,13 @@ function setupControlPanel() {
       ? 'background: #3b82f6; color: #ffffff; border-color: #60a5fa; font-weight: bold;' 
       : 'background: #1e293b; color: #94a3b8; border-color: #334155;';
     
-    stageButtonsHTML += '<button type="button" class="stage-page-btn" data-stage="' + st.stage + '" style="padding: 6px 12px; border-radius: 6px; border: 1px solid; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; ' + activeStyle + '" title="Req: ' + st.req + '">Stage ' + st.stage + '</button>';
+    stageButtonsHTML += '<button type="button" class="stage-page-btn" data-stage="' + st.stage + '" style="padding: 6px 12px; border-radius: 6px; border: 1px solid; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; ' + activeStyle + '">' + st.req + '</button>';
   });
 
   panel.innerHTML = 
     '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">' +
       '<div style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; text-transform: uppercase;">' +
-        (runeCategories[currentTab] || 'Rune') + ' Progression Stages:' +
+        (runeCategories[currentTab] || 'Rune') + ' Progression Tiers:' +
       '</div>' +
       '<div style="display: flex; align-items: center; gap: 8px;">' +
         '<label for="targetRuneInput" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1;">Target Quantity (X):</label>' +
@@ -392,7 +392,7 @@ function calculateAndRender() {
     finalLuck = rawLuck * stageStats.luck;
     actualRPS = actualRPS * stageStats.speed * stageStats.bulk;
 
-    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS (Stage Boosted)');
+    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
   }
 
   setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
