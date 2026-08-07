@@ -1,14 +1,14 @@
 :root {
-  --bg-dark: #0b0f19;
-  --panel-bg: #111827;
-  --card-bg: #1f2937;
-  --card-inner: #111827;
+  --bg-dark: #080c14;
+  --panel-bg: #0f172a;
+  --card-bg: #1e293b;
+  --card-inner: #0f172a;
   --accent-blue: #3b82f6;
   --accent-purple: #a855f7;
   --accent-cyan: #38bdf8;
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
-  --border-color: #374151;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #1e293b;
 }
 
 * {
@@ -27,7 +27,7 @@ body {
 
 /* Header */
 .app-header {
-  background: #111827;
+  background: #0f172a;
   border-bottom: 1px solid var(--border-color);
   padding: 16px 24px;
 }
@@ -42,7 +42,7 @@ body {
 
 .brand .game-tag {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent-blue);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -60,7 +60,7 @@ body {
   color: #f87171;
   padding: 8px 16px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -71,43 +71,44 @@ body {
   border-color: #f87171;
 }
 
-/* Layout Container */
+/* Main Container */
 .container {
   max-width: 1200px;
   margin: 24px auto;
   padding: 0 16px;
 }
 
-/* Calculator Controls Panel */
+/* Control Panel */
 .calculator-panel {
   background: var(--panel-bg);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 20px;
   margin-bottom: 24px;
 }
 
 .panel-section {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
+/* Image 7 Title Style */
 .section-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--accent-blue);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   border-left: 3px solid var(--accent-blue);
-  padding-left: 8px;
+  padding-left: 10px;
 }
 
-/* Dynamic Grid for Player Statistics */
+/* Player Statistics Grid (Image 7 Layout) */
 .inputs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-  align-items: flex-start;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  align-items: start;
 }
 
 .input-group {
@@ -117,21 +118,22 @@ body {
 
 .input-group label {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
 }
 
+/* Dark Box Inputs (Image 7 Style) */
 .input-group input[type="text"] {
   background: #000000;
-  border: 1px solid var(--border-color);
+  border: 1px solid #1e293b;
   border-radius: 6px;
   color: #ffffff;
-  padding: 10px 12px;
-  font-size: 0.95rem;
-  font-weight: 700;
+  padding: 12px 14px;
+  font-size: 1.1rem;
+  font-weight: 800;
   outline: none;
   transition: border-color 0.2s ease;
 }
@@ -140,34 +142,38 @@ body {
   border-color: var(--accent-blue);
 }
 
-/* Image 6 parsed rate text readout */
+/* Image 7 Parsed Rate Text */
 .parsed-rate-text {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   color: var(--accent-cyan);
-  margin-top: 6px;
+  margin-top: 8px;
   letter-spacing: 0.02em;
 }
 
-/* Toggle Switch Styles */
-.toggle-group {
+/* Toggles Layout */
+.toggles-row {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 22px; /* Aligns with input boxes */
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.toggle-group {
+  flex: 1;
+  min-width: 180px;
 }
 
 .toggle-switch {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
   gap: 10px;
   background: #000000;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: 6px;
-  border: 1px solid var(--border-color);
-  width: 100%;
+  border: 1px solid #1e293b;
 }
 
 .toggle-switch input {
@@ -206,12 +212,11 @@ body {
 
 .toggle-label {
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-main);
-  white-space: nowrap;
 }
 
-/* Potions Section */
+/* Potions Grid */
 .potions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -222,7 +227,7 @@ body {
   display: flex;
   align-items: center;
   background: #000000;
-  border: 1px solid var(--border-color);
+  border: 1px solid #1e293b;
   border-radius: 8px;
   padding: 12px;
   cursor: pointer;
@@ -242,12 +247,12 @@ body {
 
 .potion-title {
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .potion-buff {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .pot-server { color: #a855f7; }
@@ -255,10 +260,10 @@ body {
 .pot-speed { color: #38bdf8; }
 .pot-bulk { color: #fbbf24; }
 
-/* Stats Output Banner */
+/* Stats Summary */
 .stats-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 12px;
   margin-top: 16px;
   padding-top: 16px;
@@ -267,7 +272,7 @@ body {
 
 .summary-metric {
   background: #000000;
-  border: 1px solid var(--border-color);
+  border: 1px solid #1e293b;
   border-radius: 8px;
   padding: 12px 16px;
   display: flex;
@@ -276,24 +281,23 @@ body {
 
 .metric-label {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-muted);
-  text-transform: uppercase;
 }
 
 .metric-value {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 900;
 }
 
 .value-actual { color: #c084fc; }
 .value-luck { color: #38bdf8; }
 
-/* Goal Time Box */
+/* Target Progression Box */
 .time-display-box {
-  margin-top: 12px;
+  margin-top: 14px;
   background: #000000;
-  border: 1px solid var(--border-color);
+  border: 1px solid #1e293b;
   border-radius: 8px;
   padding: 12px 16px;
   display: flex;
@@ -303,7 +307,7 @@ body {
 
 .time-label {
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-muted);
 }
 
@@ -314,7 +318,7 @@ body {
 }
 
 /* Category Navigation Tabs */
-.tabs-container, .tabs {
+.tabs-container {
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
@@ -327,7 +331,7 @@ body {
   color: var(--text-muted);
   padding: 10px 20px;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.85rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -344,7 +348,7 @@ body {
   color: #ffffff;
 }
 
-/* Runes Cards Grid */
+/* Cards Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -360,15 +364,8 @@ body {
   flex-direction: column;
   justify-content: space-between;
   min-height: 240px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.rune-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-}
-
-/* Card Color Variants */
 .color-white { border-color: #e5e7eb; }
 .color-green { border-color: #22c55e; }
 .color-blue { border-color: #3b82f6; }
@@ -384,12 +381,11 @@ body {
   font-size: 1.1rem;
   font-weight: 900;
   text-align: center;
-  letter-spacing: 0.05em;
 }
 
 .rune-category {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-muted);
   text-align: center;
   margin-bottom: 8px;
@@ -400,17 +396,11 @@ body {
   border-radius: 20px;
   padding: 4px 12px;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #34d399;
   text-align: center;
   margin: 0 auto 12px auto;
   width: fit-content;
-}
-
-.divider {
-  height: 1px;
-  background: var(--border-color);
-  margin-bottom: 12px;
 }
 
 .buffs-container {
@@ -423,12 +413,6 @@ body {
 
 .buff-item {
   font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.tag-max {
-  font-size: 0.7rem;
-  color: #a855f7;
   font-weight: 800;
 }
 
@@ -439,12 +423,10 @@ body {
   font-size: 0.75rem;
   text-align: center;
   margin-bottom: 10px;
-  line-height: 1.3;
 }
 
 .rune-chance {
   font-size: 0.85rem;
   font-weight: 800;
   text-align: center;
-  color: var(--text-main);
 }
