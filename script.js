@@ -261,29 +261,25 @@ function calculateAndRender() {
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
-  // Toggle input fields
+  // Show / Hide elements based on mode
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
   const groupBulk = document.getElementById('groupBulk');
   const potionsSection = document.getElementById('potionsSection');
+  const baseRpsMetric = document.getElementById('baseRpsMetric');
 
-  if (groupRps && groupSpeed && groupBulk) {
-    groupRps.style.display = isAdvanced ? 'none' : '';
-    groupSpeed.style.display = isAdvanced ? '' : 'none';
-    groupBulk.style.display = isAdvanced ? '' : 'none';
-  }
-
-  // Toggle Potions section visibility
-  if (potionsSection) {
-    potionsSection.style.display = isAdvanced ? '' : 'none';
-  }
+  if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
+  if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
+  if (groupBulk) groupBulk.style.display = isAdvanced ? 'flex' : 'none';
+  if (potionsSection) potionsSection.style.display = isAdvanced ? 'block' : 'none';
+  if (baseRpsMetric) baseRpsMetric.style.display = isAdvanced ? 'flex' : 'none';
 
   let baseRPS = 0;
   let actualRPS = 0;
   let finalLuck = rawLuck;
 
   if (isAdvanced) {
-    // Advanced Mode: Apply potion multipliers
+    // Advanced Mode: calculate using Speed x Bulk x Potions
     const potServer = getChecked('potServer', false);
     const potLuck = getChecked('potLuck', true);
     const potSpeed = getChecked('potSpeed', true);
@@ -305,11 +301,14 @@ function calculateAndRender() {
     baseRPS = rawSpeed * rawBulk;
     actualRPS = finalSpeed * finalBulk;
   } else {
-    // Basic Mode: Direct calculation without potion multipliers
+    // Basic Mode: direct single input without potion calculations
     const rawRPS = parseFormattedNumber(getVal('rpsInput', '0'));
     baseRPS = rawRPS;
     actualRPS = rawRPS;
     finalLuck = rawLuck;
+
+    // Update Image 6 parsed rate text readout
+    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
   }
 
   setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
@@ -389,7 +388,7 @@ function calculateAndRender() {
 function saveData() {
   const data = {
     luckInput: getVal('luckInput', '738.01Qn'),
-    rpsInput: getVal('rpsInput', '1.58Sp'),
+    rpsInput: getVal('rpsInput', '32.27De'),
     speedInput: getVal('speedInput', '139.1M'),
     bulkInput: getVal('bulkInput', '11.38Sp'),
     cloneInput: getVal('cloneInput', '8'),
@@ -440,6 +439,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loadData();
   renderCategoryTabs();
 
+  // Attach event listeners to all inputs & switches
   document.querySelectorAll('input').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
     input.addEventListener('change', calculateAndRender);
