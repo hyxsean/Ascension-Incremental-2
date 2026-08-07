@@ -230,14 +230,12 @@ function renderCategoryTabs() {
 
 function calculateAndRender() {
   const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
-  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
 
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
   const groupBulk = document.getElementById('groupBulk');
-  const groupClone = document.getElementById('groupClone');
   const groupLuck = document.getElementById('groupLuck');
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
@@ -247,7 +245,6 @@ function calculateAndRender() {
   if (groupLuck) groupLuck.style.display = isAdvanced ? 'flex' : 'none';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
   if (groupBulk) groupBulk.style.display = isAdvanced ? 'flex' : 'none';
-  if (groupClone) groupClone.style.display = isAdvanced ? 'flex' : 'none';
   if (potionsSection) potionsSection.style.display = isAdvanced ? 'block' : 'none';
   if (baseRpsMetric) baseRpsMetric.style.display = isAdvanced ? 'flex' : 'none';
 
@@ -360,7 +357,6 @@ function saveData() {
     rpsInput: getVal('rpsInput', ''),
     speedInput: getVal('speedInput', ''),
     bulkInput: getVal('bulkInput', ''),
-    cloneInput: getVal('cloneInput', ''),
     luckToggle: getChecked('luckToggle', true),
     advancedToggle: getChecked('advancedToggle', false),
     potServer: getChecked('potServer', false),
@@ -385,7 +381,6 @@ function loadData() {
     if (data.rpsInput !== undefined) setVal('rpsInput', data.rpsInput);
     if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
     if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
-    if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
     if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
     if (data.advancedToggle !== undefined) setChecked('advancedToggle', data.advancedToggle);
     if (data.potServer !== undefined) setChecked('potServer', data.potServer);
