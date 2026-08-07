@@ -29,12 +29,6 @@
       <section class="panel-section">
         <h2 class="section-title">PLAYER STATISTICS</h2>
         
-        <div class="inputs-grid">
-          <div class="input-group">
-            <label for="luckInput">RUNE LUCK</label>
-            <input type="text" id="luckInput" value="" placeholder="e.g. 738.01Qn">
-          </div>
-
           <!-- Basic Mode Single Input -->
           <div class="input-group" id="groupRps">
             <label for="rpsInput">MY CURRENT RATE (RPS)</label>
@@ -43,18 +37,24 @@
           </div>
 
           <!-- Advanced Mode Speed & Bulk (Hidden in Basic Mode) -->
+
+          <div class="input-group" id="groupLuck" style="display: none;">
+            <label for="speedInput">RUNE LUCK</label>
+            <input type="text" id="speedInput" value="" placeholder="e.g. 500M">
+          </div>
+                    
           <div class="input-group" id="groupSpeed" style="display: none;">
             <label for="speedInput">RUNE SPEED</label>
-            <input type="text" id="speedInput" value="" placeholder="e.g. 139.1M">
+            <input type="text" id="speedInput" value="" placeholder="e.g. 100M">
           </div>
           <div class="input-group" id="groupBulk" style="display: none;">
             <label for="bulkInput">RUNE BULK</label>
-            <input type="text" id="bulkInput" value="" placeholder="e.g. 11.38Sp">
+            <input type="text" id="bulkInput" value="" placeholder="e.g. 35M">
           </div>
 
           <div class="input-group">
             <label for="cloneInput">RUNE CLONE</label>
-            <input type="text" id="cloneInput" value="" placeholder="e.g. 8">
+            <input type="text" id="cloneInput" value="" placeholder="e.g. 3">
           </div>
         </div>
 
