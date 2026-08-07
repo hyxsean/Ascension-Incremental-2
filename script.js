@@ -154,8 +154,14 @@ function parseFormattedNumber(inputStr) {
   const suffix = match[2];
 
   if (!suffix) return val || 0;
-  if (suffixesMap[suffix]) return val * suffixesMap[suffix];
 
+  // Capitalize the first letter and keep the rest case-insensitive (e.g. 'k' -> 'K', 'qn' -> 'Qn')
+  const formattedSuffix = suffix.charAt(0).toUpperCase() + suffix.slice(1);
+  if (suffixesMap[formattedSuffix] !== undefined) {
+    return val * suffixesMap[formattedSuffix];
+  }
+
+  // Deep fallback matching
   const lower = suffix.toLowerCase();
   const key = suffixesList.find(function(k) { return k.toLowerCase() === lower; });
   return key ? val * suffixesMap[key] : (val || 0);
