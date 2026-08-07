@@ -1,3 +1,4 @@
+const STORAGE_KEY = 'ascension_ii_optimizer_data';
 let currentTab = 'basic';
 
 const suffixesMap = {
@@ -80,48 +81,98 @@ function formatTime(totalSeconds) {
 const runeDatabase = {
   basic: [
     { name: "COMMON", type: "Basic", baseChance: 2, colorClass: "color-white", buffs: [{ text: "Points 4x", color: "#ffffff" }] },
-    { name: "UNCOMMON", type: "Basic", baseChance: 3, colorClass: "color-green", buffs: [{ text: "Points 10x", color: "#22c55e" }] },
-    { name: "RARE", type: "Basic", baseChance: 15, colorClass: "color-blue", buffs: [{ text: "Flux 5x", color: "#facc15" }] },
-    { name: "EPIC", type: "Basic", baseChance: 200, colorClass: "color-purple", buffs: [{ text: "Points 20x", color: "#ffffff" }, { text: "Flux 10x", color: "#facc15" }, { text: "Voltage 2x", color: "#ef4444" }] },
-    { name: "LEGENDARY", type: "Basic", baseChance: 5000, colorClass: "color-yellow", buffs: [{ text: "Points 25x", color: "#ffffff" }, { text: "Shards 5x", color: "#e056fd" }, { text: "Damage 2x", color: "#ef4444" }, { text: "Attack Speed 1.25x", color: "#3b82f6" }] },
-    { name: "MYTHIC", type: "Basic", baseChance: 100000, colorClass: "color-red", buffs: [{ text: "Points 100x", color: "#ffffff" }, { text: "Rune Bulk 2x", color: "#facc15" }, { text: "Rune Luck 2.5x", color: "#22c55e" }] },
-    { name: "KING", type: "Deity", baseChance: 20000000, luckOnChance: 132567400, colorClass: "color-cyan", buffs: [{ text: "Particles 10x", color: "#3b82f6" }, { text: "Rune Bulk 2.5x", color: "#facc15" }] },
-    { name: "EMPEROR", type: "Deity", baseChance: 500000000, luckOnChance: 3314000000, colorClass: "color-cyan", buffs: [{ text: "Points 100x", color: "#ffffff" }, { text: "Particles 25x", color: "#3b82f6" }, { text: "Rune Bulk 3x", color: "#facc15" }, { text: "Rune Speed 3x", color: "#06b6d4" }] },
-    { name: "OVERLORD", type: "Deity", baseChance: 90.52e15, luckOnChance: 600e15, colorClass: "color-pink", buffs: [{ text: "Points 1Kx", color: "#ffffff" }, { text: "Sacrifice Points 2.5x", color: "#818cf8" }, { text: "Rune Bulk 50x", color: "#facc15" }, { text: "Tokens 4x", color: "#38bdf8" }] }
+    { name: "UNCOMMON", type: "Basic", baseChance: 3, colorClass: "color-green", buffs: [{ text: "Points 10x", color: "#34d399" }] },
+    { name: "RARE", type: "Basic", baseChance: 15, colorClass: "color-blue", buffs: [{ text: "Flux 5x", color: "#fbbf24" }] },
+    { name: "EPIC", type: "Basic", baseChance: 200, colorClass: "color-purple", buffs: [{ text: "Points 20x", color: "#ffffff" }, { text: "Flux 10x", color: "#fbbf24" }, { text: "Voltage 2x", color: "#f87171" }] },
+    { name: "LEGENDARY", type: "Basic", baseChance: 5000, colorClass: "color-yellow", buffs: [{ text: "Points 25x", color: "#ffffff" }, { text: "Shards 5x", color: "#c084fc" }, { text: "Damage 2x", color: "#f87171" }, { text: "Attack Speed 1.25x", color: "#60a5fa" }] },
+    { name: "MYTHIC", type: "Basic", baseChance: 100000, colorClass: "color-red", buffs: [{ text: "Points 100x", color: "#ffffff" }, { text: "Rune Bulk 2x", color: "#fbbf24" }, { text: "Rune Luck 2.5x", color: "#34d399" }] },
+    { name: "KING", type: "Deity", baseChance: 20000000, luckOnChance: 132567400, colorClass: "color-cyan", buffs: [{ text: "Particles 10x", color: "#38bdf8" }, { text: "Rune Bulk 2.5x", color: "#fbbf24" }] },
+    { name: "EMPEROR", type: "Deity", baseChance: 500000000, luckOnChance: 3314000000, colorClass: "color-cyan", buffs: [{ text: "Points 100x", color: "#ffffff" }, { text: "Particles 25x", color: "#38bdf8" }, { text: "Rune Bulk 3x", color: "#fbbf24" }, { text: "Rune Speed 3x", color: "#38bdf8" }] },
+    { name: "OVERLORD", type: "Deity", baseChance: 90.52e15, luckOnChance: 600e15, colorClass: "color-pink", buffs: [{ text: "Points 1Kx", color: "#ffffff" }, { text: "Sacrifice Points 2.5x", color: "#818cf8" }, { text: "Rune Bulk 50x", color: "#fbbf24" }, { text: "Tokens 4x", color: "#38bdf8" }] }
   ],
   cybernetic: [
-    { name: "STANDARD", type: "Basic", baseChance: 2, colorClass: "color-white", buffs: [{ text: "Particles 4x", color: "#3b82f6" }] },
-    { name: "LEGACY", type: "Basic", baseChance: 5000, colorClass: "color-purple", buffs: [{ text: "Particles 6x", color: "#3b82f6" }] },
-    { name: "ADVANCED", type: "Basic", baseChance: 250000, colorClass: "color-cyan", buffs: [{ text: "Particles 8x", color: "#3b82f6" }, { text: "Rune Luck 2x", color: "#22c55e" }] },
-    { name: "OVERCLOCKED", type: "Basic", baseChance: 1000000, colorClass: "color-red", buffs: [{ text: "Points 100x", color: "#ffffff" }, { text: "Particles 10x", color: "#3b82f6" }] },
-    { name: "NEURAL", type: "Basic", baseChance: 200000000, colorClass: "color-orange", buffs: [{ text: "Voltage 3x", color: "#ef4444" }, { text: "Plasma 4x", color: "#e056fd" }] },
-    { name: "QUANTUM", type: "Basic", baseChance: 500000000000, colorClass: "color-pink", buffs: [{ text: "Particles 3x", color: "#3b82f6" }, { text: "Rune Bulk 2x", color: "#facc15" }] },
-    { name: "CYBERNETIC", type: "Deity", baseChance: 500.21e6, luckOnChance: 6e9, colorClass: "color-green", buffs: [{ text: "Points 5Kx", color: "#ffffff" }, { text: "Plasma 5x", color: "#e056fd" }, { text: "Pulse Button 3x", color: "#22c55e" }, { text: "Sacrifice Points 2x", color: "#3b82f6" }] },
-    { name: "SINGULARITY", type: "Deity", baseChance: 250e9, luckOnChance: 3e12, colorClass: "color-green", buffs: [{ text: "Points 100Kx", color: "#ffffff" }, { text: "Particles 10x", color: "#3b82f6" }, { text: "Sacrifice Points 3x", color: "#818cf8" }, { text: "Rune Bulk 5x", color: "#facc15" }, { text: "Rune Speed 3x", color: "#06b6d4" }] },
-    { name: "EXODUS", type: "Deity", baseChance: 25.01e18, luckOnChance: 300e18, colorClass: "color-orange", buffs: [{ text: "Points 500x", color: "#ffffff" }, { text: "Sacrifice Points 4x", color: "#818cf8" }, { text: "Rune Bulk 5x", color: "#facc15" }] }
+    { name: "STANDARD", type: "Basic", baseChance: 2, colorClass: "color-white", buffs: [{ text: "Particles 4x", color: "#38bdf8" }] },
+    { name: "LEGACY", type: "Basic", baseChance: 5000, colorClass: "color-purple", buffs: [{ text: "Particles 6x", color: "#38bdf8" }] },
+    { name: "ADVANCED", type: "Basic", baseChance: 250000, colorClass: "color-cyan", buffs: [{ text: "Particles 8x", color: "#38bdf8" }, { text: "Rune Luck 2x", color: "#34d399" }] },
+    { name: "OVERCLOCKED", type: "Basic", baseChance: 1000000, colorClass: "color-red", buffs: [{ text: "Points 100x", color: "#ffffff" }, { text: "Particles 10x", color: "#38bdf8" }] },
+    { name: "NEURAL", type: "Basic", baseChance: 200000000, colorClass: "color-orange", buffs: [{ text: "Voltage 3x", color: "#f87171" }, { text: "Plasma 4x", color: "#c084fc" }] },
+    { name: "QUANTUM", type: "Basic", baseChance: 500000000000, colorClass: "color-pink", buffs: [{ text: "Particles 3x", color: "#38bdf8" }, { text: "Rune Bulk 2x", color: "#fbbf24" }] },
+    { name: "CYBERNETIC", type: "Deity", baseChance: 500.21e6, luckOnChance: 6e9, colorClass: "color-green", buffs: [{ text: "Points 5Kx", color: "#ffffff" }, { text: "Plasma 5x", color: "#c084fc" }, { text: "Pulse Button 3x", color: "#34d399" }, { text: "Sacrifice Points 2x", color: "#38bdf8" }] },
+    { name: "SINGULARITY", type: "Deity", baseChance: 250e9, luckOnChance: 3e12, colorClass: "color-green", buffs: [{ text: "Points 100Kx", color: "#ffffff" }, { text: "Particles 10x", color: "#38bdf8" }, { text: "Sacrifice Points 3x", color: "#818cf8" }, { text: "Rune Bulk 5x", color: "#fbbf24" }, { text: "Rune Speed 3x", color: "#38bdf8" }] },
+    { name: "EXODUS", type: "Deity", baseChance: 25.01e18, luckOnChance: 300e18, colorClass: "color-orange", buffs: [{ text: "Points 500x", color: "#ffffff" }, { text: "Sacrifice Points 4x", color: "#818cf8" }, { text: "Rune Bulk 5x", color: "#fbbf24" }] }
   ],
   sand: [
-    { name: "SILT", type: "Basic", baseChance: 2, colorClass: "color-white", buffs: [{ text: "Cactus 2x", color: "#22c55e" }] },
-    { name: "CINDER", type: "Basic", baseChance: 10000000000, colorClass: "color-white", buffs: [{ text: "Cactus 3x", color: "#22c55e" }] },
-    { name: "HUSK", type: "Basic", baseChance: 1000000000000, colorClass: "color-red", buffs: [{ text: "Cactus 10x", color: "#22c55e" }] },
-    { name: "BRINE", type: "Basic", baseChance: 200000000000000, colorClass: "color-green", buffs: [{ text: "Cactus 25x", color: "#22c55e" }, { text: "Sand 2x", color: "#facc15" }, { text: "Rune Luck 4x", color: "#22c55e" }] },
-    { name: "RUST", type: "Basic", baseChance: 10000000000000000, colorClass: "color-brown", buffs: [{ text: "Cactus 5x", color: "#22c55e" }, { text: "Sand 5x", color: "#facc15" }, { text: "Rune Luck 5x", color: "#22c55e" }] },
+    { name: "SILT", type: "Basic", baseChance: 2, colorClass: "color-white", buffs: [{ text: "Cactus 2x", color: "#34d399" }] },
+    { name: "CINDER", type: "Basic", baseChance: 10000000000, colorClass: "color-white", buffs: [{ text: "Cactus 3x", color: "#34d399" }] },
+    { name: "HUSK", type: "Basic", baseChance: 1000000000000, colorClass: "color-red", buffs: [{ text: "Cactus 10x", color: "#34d399" }] },
+    { name: "BRINE", type: "Basic", baseChance: 200000000000000, colorClass: "color-green", buffs: [{ text: "Cactus 25x", color: "#34d399" }, { text: "Sand 2x", color: "#fbbf24" }, { text: "Rune Luck 4x", color: "#34d399" }] },
+    { name: "RUST", type: "Basic", baseChance: 10000000000000000, colorClass: "color-brown", buffs: [{ text: "Cactus 5x", color: "#34d399" }, { text: "Sand 5x", color: "#fbbf24" }, { text: "Rune Luck 5x", color: "#34d399" }] },
     { name: "SHARD", type: "Basic", baseChance: 2e21, colorClass: "color-yellow", buffs: [{ text: "Snow 32.83Kx [∞]", color: "#ffffff" }] },
-    { name: "GRIT", type: "Deity", baseChance: 5e15, luckOnChance: 51.85e15, colorClass: "color-yellow", buffs: [{ text: "Fire 71.59x [∞]", color: "#ef4444" }, { text: "Rune Bulk 3x", color: "#facc15" }, { text: "Tokens 50x", color: "#f97316" }] },
-    { name: "SLAG", type: "Deity", baseChance: 5e24, luckOnChance: 51.85e24, colorClass: "color-green", buffs: [{ text: "Fire 100x", color: "#ef4444" }, { text: "Magma 50x", color: "#f97316" }, { text: "Rune Bulk 50x", color: "#facc15" }, { text: "Rune Luck 10x", color: "#22c55e" }] },
-    { name: "PYRAMID", type: "Deity", baseChance: 1e36, luckOnChance: 10.37e36, colorClass: "color-yellow", buffs: [{ text: "Cactus 50x", color: "#22c55e" }, { text: "Sand 100x", color: "#facc15" }] }
+    { name: "GRIT", type: "Deity", baseChance: 5e15, luckOnChance: 51.85e15, colorClass: "color-yellow", buffs: [{ text: "Fire 71.59x [∞]", color: "#f87171" }, { text: "Rune Bulk 3x", color: "#fbbf24" }, { text: "Tokens 50x", color: "#fb923c" }] },
+    { name: "SLAG", type: "Deity", baseChance: 5e24, luckOnChance: 51.85e24, colorClass: "color-green", buffs: [{ text: "Fire 100x", color: "#f87171" }, { text: "Magma 50x", color: "#fb923c" }, { text: "Rune Bulk 50x", color: "#fbbf24" }, { text: "Rune Luck 10x", color: "#34d399" }] },
+    { name: "PYRAMID", type: "Deity", baseChance: 1e36, luckOnChance: 10.37e36, colorClass: "color-yellow", buffs: [{ text: "Cactus 50x", color: "#34d399" }, { text: "Sand 100x", color: "#fbbf24" }] }
   ],
   fire: [
-    { name: "PYRE", type: "Basic", baseChance: 2, colorClass: "color-yellow", buffs: [{ text: "Fire 3x", color: "#ef4444" }] },
-    { name: "VULKAN", type: "Basic", baseChance: 100000000000000, colorClass: "color-red", buffs: [{ text: "Fire 5x", color: "#ef4444" }] },
-    { name: "IGNIS", type: "Basic", baseChance: 10000000000000000, colorClass: "color-red", buffs: [{ text: "Fire 25x", color: "#ef4444" }] },
-    { name: "ASH", type: "Basic", baseChance: 1e21, colorClass: "color-white", buffs: [{ text: "Fire 100x", color: "#ef4444" }, { text: "Rune Bulk 5x", color: "#facc15" }, { text: "Rune Luck 5x", color: "#22c55e" }] },
-    { name: "BLAZE", type: "Basic", baseChance: 1e25, colorClass: "color-pink", buffs: [{ text: "Cactus 10x", color: "#22c55e" }, { text: "Fire 3x", color: "#ef4444" }, { text: "Rune Luck 10x", color: "#22c55e" }] },
-    { name: "MELT", type: "Basic", baseChance: 1e29, colorClass: "color-purple", buffs: [{ text: "Cactus 25x", color: "#22c55e" }, { text: "Fire 10x", color: "#ef4444" }, { text: "Magma 3x", color: "#f97316" }, { text: "Rune Luck 5x", color: "#22c55e" }] },
-    { name: "FURNACE", type: "Deity", baseChance: 50e24, luckOnChance: 336.9e24, colorClass: "color-orange", buffs: [{ text: "Cactus 1Kx", color: "#22c55e" }, { text: "Fire 100x", color: "#ef4444" }, { text: "Rune Bulk 100x", color: "#facc15" }] },
-    { name: "INFERNO", type: "Deity", baseChance: 25e27, luckOnChance: 168.45e27, colorClass: "color-pink", buffs: [{ text: "Points 1.54Kx [∞]", color: "#ffffff" }, { text: "Rune Bulk 25x", color: "#facc15" }, { text: "Tokens 100x", color: "#f97316" }] }
+    { name: "PYRE", type: "Basic", baseChance: 2, colorClass: "color-yellow", buffs: [{ text: "Fire 3x", color: "#f87171" }] },
+    { name: "VULKAN", type: "Basic", baseChance: 100000000000000, colorClass: "color-red", buffs: [{ text: "Fire 5x", color: "#f87171" }] },
+    { name: "IGNIS", type: "Basic", baseChance: 10000000000000000, colorClass: "color-red", buffs: [{ text: "Fire 25x", color: "#f87171" }] },
+    { name: "ASH", type: "Basic", baseChance: 1e21, colorClass: "color-white", buffs: [{ text: "Fire 100x", color: "#f87171" }, { text: "Rune Bulk 5x", color: "#fbbf24" }, { text: "Rune Luck 5x", color: "#34d399" }] },
+    { name: "BLAZE", type: "Basic", baseChance: 1e25, colorClass: "color-pink", buffs: [{ text: "Cactus 10x", color: "#34d399" }, { text: "Fire 3x", color: "#f87171" }, { text: "Rune Luck 10x", color: "#34d399" }] },
+    { name: "MELT", type: "Basic", baseChance: 1e29, colorClass: "color-purple", buffs: [{ text: "Cactus 25x", color: "#34d399" }, { text: "Fire 10x", color: "#f87171" }, { text: "Magma 3x", color: "#fb923c" }, { text: "Rune Luck 5x", color: "#34d399" }] },
+    { name: "FURNACE", type: "Deity", baseChance: 50e24, luckOnChance: 336.9e24, colorClass: "color-orange", buffs: [{ text: "Cactus 1Kx", color: "#34d399" }, { text: "Fire 100x", color: "#f87171" }, { text: "Rune Bulk 100x", color: "#fbbf24" }] },
+    { name: "INFERNO", type: "Deity", baseChance: 25e27, luckOnChance: 168.45e27, colorClass: "color-pink", buffs: [{ text: "Points 1.54Kx [∞]", color: "#ffffff" }, { text: "Rune Bulk 25x", color: "#fbbf24" }, { text: "Tokens 100x", color: "#fb923c" }] }
   ]
 };
+
+/* Auto-Save & Load Functions */
+function saveData() {
+  const data = {
+    luckInput: document.getElementById('luckInput').value,
+    speedInput: document.getElementById('speedInput').value,
+    bulkInput: document.getElementById('bulkInput').value,
+    cloneInput: document.getElementById('cloneInput').value,
+    luckToggle: document.getElementById('luckToggle').checked,
+    potServer: document.getElementById('potServer').checked,
+    potLuck: document.getElementById('potLuck').checked,
+    potSpeed: document.getElementById('potSpeed').checked,
+    potBulk: document.getElementById('potBulk').checked,
+    incomeInput: document.getElementById('incomeInput').value,
+    currentInput: document.getElementById('currentInput').value,
+    targetInput: document.getElementById('targetInput').value,
+    currentTab: currentTab
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadData() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return;
+
+  try {
+    const data = JSON.parse(raw);
+    if (data.luckInput !== undefined) document.getElementById('luckInput').value = data.luckInput;
+    if (data.speedInput !== undefined) document.getElementById('speedInput').value = data.speedInput;
+    if (data.bulkInput !== undefined) document.getElementById('bulkInput').value = data.bulkInput;
+    if (data.cloneInput !== undefined) document.getElementById('cloneInput').value = data.cloneInput;
+    if (data.luckToggle !== undefined) document.getElementById('luckToggle').checked = data.luckToggle;
+    if (data.potServer !== undefined) document.getElementById('potServer').checked = data.potServer;
+    if (data.potLuck !== undefined) document.getElementById('potLuck').checked = data.potLuck;
+    if (data.potSpeed !== undefined) document.getElementById('potSpeed').checked = data.potSpeed;
+    if (data.potBulk !== undefined) document.getElementById('potBulk').checked = data.potBulk;
+    if (data.incomeInput !== undefined) document.getElementById('incomeInput').value = data.incomeInput;
+    if (data.currentInput !== undefined) document.getElementById('currentInput').value = data.currentInput;
+    if (data.targetInput !== undefined) document.getElementById('targetInput').value = data.targetInput;
+
+    if (data.currentTab && runeDatabase[data.currentTab]) {
+      currentTab = data.currentTab;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === currentTab);
+      });
+    }
+  } catch (e) {
+    console.error("Failed to load saved state:", e);
+  }
+}
 
 function calculateAndRender() {
   const rawLuck = parseFormattedNumber(document.getElementById('luckInput').value);
@@ -149,7 +200,7 @@ function calculateAndRender() {
 
   document.getElementById('actualRpsDisplay').textContent = formatNumber(actualRPS) + " RPS";
   document.getElementById('baseRpsDisplay').textContent = formatNumber(baseRPS) + " RPS";
-  document.getElementById('luckDisplay').textContent = globalLuckToggle ? formatNumber(finalLuck) + "x" : "1x (Off)";
+  document.getElementById('luckDisplay').textContent = globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off";
 
   const incomePerSec = parseFormattedNumber(document.getElementById('incomeInput').value);
   const currentVal = parseFormattedNumber(document.getElementById('currentInput').value);
@@ -197,8 +248,8 @@ function calculateAndRender() {
     if (rune.type === "Deity") {
       const penaltyRatio = (rune.luckOnChance / rune.baseChance).toFixed(1);
       warningHTML = globalLuckToggle 
-        ? `<div class="warning-text" style="color: #ef4444">Luck Active: Penalized ${penaltyRatio}x<br><strong>TURN OFF LUCK TO OPTIMIZE</strong></div>`
-        : `<div class="warning-text" style="color: #22c55e">LUCK DISABLED<br><strong>OPTIMAL CHANCE ACTIVE</strong></div>`;
+        ? `<div class="warning-text" style="color: #f87171">Luck Active: Penalized ${penaltyRatio}x<br><strong>TURN OFF LUCK</strong></div>`
+        : `<div class="warning-text" style="color: #34d399">LUCK DISABLED<br><strong>OPTIMAL CHANCE ACTIVE</strong></div>`;
     }
 
     card.innerHTML = `
@@ -217,10 +268,12 @@ function calculateAndRender() {
 
     grid.appendChild(card);
   });
+
+  saveData();
 }
 
 // Event Listeners
-document.querySelectorAll('.input-group input, .potions-grid input, .grind-section input').forEach(input => {
+document.querySelectorAll('input').forEach(input => {
   input.addEventListener('input', calculateAndRender);
   input.addEventListener('change', calculateAndRender);
 });
@@ -234,5 +287,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// Initial Render
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (confirm("Reset all calculator stats to defaults?")) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+});
+
+// Initialization
+loadData();
 calculateAndRender();
