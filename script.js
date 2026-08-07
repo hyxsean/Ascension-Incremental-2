@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'ascension_ii_optimizer_data';
+const STORAGE_KEY = 'ascension_ii_optimizer_data_v2';
 let currentTab = '';
 
 // ============================================================================
@@ -286,9 +286,8 @@ function calculateAndRender() {
   setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
   setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
 
-  // Fallback to Effective RPS if income input is left blank
-  const rawIncomeStr = getVal('incomeInput', '').trim();
-  const incomePerSec = rawIncomeStr !== '' ? parseFormattedNumber(rawIncomeStr) : actualRPS;
+  // Read strictly from the Income Rate input field for currency progression
+  const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
 
   const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
   const targetVal = parseFormattedNumber(getVal('targetInput', '0'));
