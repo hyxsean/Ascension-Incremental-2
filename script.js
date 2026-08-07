@@ -315,7 +315,7 @@ function calculateAndRender() {
     }
 
     const dropProbability = 1 / Math.max(1, effectiveChance);
-    const estimatedYieldPerSec = actualRPS * dropProbability * Math.max(1, cloneVal);
+    const estimatedYieldPerSec = actualRPS * dropProbability
     const secondsForOne = estimatedYieldPerSec > 0 ? (1 / estimatedYieldPerSec) : Infinity;
 
     const card = document.createElement('div');
