@@ -27,37 +27,39 @@
       
       <!-- Section: Player Stats -->
       <section class="panel-section">
-        <h2 class="section-title">Player Statistics</h2>
+        <h2 class="section-title">PLAYER STATISTICS</h2>
+        
         <div class="inputs-grid">
-          
           <div class="input-group">
-            <label for="luckInput">Rune Luck</label>
+            <label for="luckInput">RUNE LUCK</label>
             <input type="text" id="luckInput" value="738.01Qn">
           </div>
 
-          <!-- Basic Mode Input: Direct RPS (Image 6 Style) -->
+          <!-- Basic Mode Single Input (Matching Image 7) -->
           <div class="input-group" id="groupRps">
-            <label for="rpsInput">My Current Rate (RPS)</label>
-            <input type="text" id="rpsInput" value="32.27De">
-            <span class="parsed-rate-text" id="parsedRateDisplay">Parsed Rate: 32.27De RPS</span>
+            <label for="rpsInput">MY CURRENT RATE (RPS)</label>
+            <input type="text" id="rpsInput" value="2000">
+            <span class="parsed-rate-text" id="parsedRateDisplay">Parsed Rate: 2K RPS</span>
           </div>
 
-          <!-- Advanced Mode Inputs: Speed & Bulk (Hidden in Basic) -->
+          <!-- Advanced Mode Speed & Bulk (Hidden in Basic Mode) -->
           <div class="input-group" id="groupSpeed" style="display: none;">
-            <label for="speedInput">Rune Speed</label>
+            <label for="speedInput">RUNE SPEED</label>
             <input type="text" id="speedInput" value="139.1M">
           </div>
           <div class="input-group" id="groupBulk" style="display: none;">
-            <label for="bulkInput">Rune Bulk</label>
+            <label for="bulkInput">RUNE BULK</label>
             <input type="text" id="bulkInput" value="11.38Sp">
           </div>
 
           <div class="input-group">
-            <label for="cloneInput">Rune Clone</label>
+            <label for="cloneInput">RUNE CLONE</label>
             <input type="text" id="cloneInput" value="8">
           </div>
+        </div>
 
-          <!-- Toggles -->
+        <!-- Toggles Row -->
+        <div class="toggles-row">
           <div class="input-group toggle-group">
             <label class="toggle-switch">
               <input type="checkbox" id="luckToggle" checked>
@@ -73,13 +75,12 @@
               <span class="toggle-label">Advanced Mode</span>
             </label>
           </div>
-
         </div>
       </section> 
 
-      <!-- Section: Active Boosts & Potions (Only visible in Advanced Mode) -->
+      <!-- Section: Active Boosts & Potions (Advanced Mode Only) -->
       <section class="panel-section" id="potionsSection" style="display: none;">
-        <h2 class="section-title">Active Boosts & Potions</h2>
+        <h2 class="section-title">ACTIVE BOOSTS & POTIONS</h2>
         <div class="potions-grid">
           <label class="potion-card">
             <input type="checkbox" id="potServer">
@@ -115,34 +116,34 @@
       <!-- Output Banner -->
       <div class="stats-summary">
         <div class="summary-metric">
-          <span class="metric-label">Effective RPS</span>
+          <span class="metric-label">EFFECTIVE RPS</span>
           <span class="metric-value value-actual" id="actualRpsDisplay">0</span>
         </div>
         <div class="summary-metric" id="baseRpsMetric" style="display: none;">
-          <span class="metric-label">Base RPS</span>
+          <span class="metric-label">BASE RPS</span>
           <span class="metric-value" id="baseRpsDisplay">0</span>
         </div>
         <div class="summary-metric">
-          <span class="metric-label">Effective Luck</span>
+          <span class="metric-label">EFFECTIVE LUCK</span>
           <span class="metric-value value-luck" id="luckDisplay">1x</span>
         </div>
       </div>
     </div>
 
-    <!-- Section: Goal Calculator -->
-    <section class="panel-section">
-      <h2 class="section-title">Target Progression</h2>
+    <!-- Section: Target Goal -->
+    <section class="panel-section calculator-panel">
+      <h2 class="section-title">TARGET PROGRESSION</h2>
       <div class="inputs-grid">
         <div class="input-group">
-          <label for="incomeInput">Income Rate (/sec)</label>
+          <label for="incomeInput">INCOME RATE (/SEC)</label>
           <input type="text" id="incomeInput" value="4.6T">
         </div>
         <div class="input-group">
-          <label for="currentInput">Current Balance</label>
+          <label for="currentInput">CURRENT BALANCE</label>
           <input type="text" id="currentInput" value="900Qd">
         </div>
         <div class="input-group">
-          <label for="targetInput">Goal Cost</label>
+          <label for="targetInput">GOAL COST</label>
           <input type="text" id="targetInput" value="2Qn">
         </div>
       </div>
