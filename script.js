@@ -8,7 +8,6 @@ let currentTab = '';
 const runeCategories = {};
 const runeDatabase = {};
 
-// Color palette map for automatic buff text coloring
 const buffColorMap = {
   "snow": "#38bdf8",
   "points": "#ffffff",
@@ -41,7 +40,6 @@ function addRune(categoryId, config) {
     return;
   }
 
-  // Parse buffs into rich objects automatically if strings are passed
   const processedBuffs = (config.buffs || []).map(function(b) {
     if (typeof b === 'object' && b.text) return b;
     
@@ -73,16 +71,15 @@ function addRune(categoryId, config) {
 }
 
 // ============================================================================
-// 2. DEFINE YOUR DATABASE (EDIT / ADD RUNES HERE)
+// 2. DEFINE YOUR DATABASE
 // ============================================================================
 
-// --- Categories ---
 registerCategory("basic", "Basic Rune");
 registerCategory("essential", "Essential Rune");
 registerCategory("desert", "Desert Rune");
 registerCategory("magma", "Magma Rune");
 
-// --- Bbasic rune ---
+// --- BASIC SET ---
 addRune("basic", { name: "COMMON", chance: 2, color: "white", buffs: ["Points 4x"] });
 addRune("basic", { name: "UNCOMMON", chance: 3, color: "green", buffs: ["Points 10x"] });
 addRune("basic", { name: "RARE", chance: 15, color: "blue", buffs: ["Flux 5x"] });
@@ -93,7 +90,7 @@ addRune("basic", { name: "KING", type: "Deity", chance: 20000000, luckOnChance: 
 addRune("basic", { name: "EMPEROR", type: "Deity", chance: 500000000, luckOnChance: 3314000000, color: "cyan", buffs: ["Points 100x", "Particles 25x", "Rune Bulk 3x", "Rune Speed 3x"] });
 addRune("basic", { name: "OVERLORD", type: "Deity", chance: 90.52e15, luckOnChance: 600e15, color: "pink", buffs: ["Points 1Kx", "Sacrifice Points 2.5x", "Rune Bulk 50x", "Tokens 4x"] });
 
-// --- CYBERNETIC SET ---
+// --- ESSENTIAL SET ---
 addRune("essential", { name: "STANDARD", chance: 2, color: "white", buffs: ["Particles 4x"] });
 addRune("essential", { name: "LEGACY", chance: 5000, color: "purple", buffs: ["Particles 6x"] });
 addRune("essential", { name: "ADVANCED", chance: 250000, color: "cyan", buffs: ["Particles 8x", "Rune Luck 2x"] });
@@ -104,17 +101,18 @@ addRune("essential", { name: "CYBERNETIC", type: "Deity", chance: 500.21e6, luck
 addRune("essential", { name: "SINGULARITY", type: "Deity", chance: 250e9, luckOnChance: 3e12, color: "green", buffs: ["Points 100Kx", "Particles 10x", "Sacrifice Points 3x", "Rune Bulk 5x", "Rune Speed 3x"] });
 addRune("essential", { name: "EXODUS", type: "Deity", chance: 25.01e18, luckOnChance: 300e18, color: "orange", buffs: ["Points 500x", "Sacrifice Points 4x", "Rune Bulk 5x"] });
 
-// --- Desert Rune ---
+// --- DESERT SET ---
 addRune("desert", { name: "SILT", chance: 2, color: "white", buffs: ["Cactus 2x"] });
 addRune("desert", { name: "CINDER", chance: 10000000000, color: "white", buffs: ["Cactus 3x"] });
 addRune("desert", { name: "HUSK", chance: 1000000000000, color: "red", buffs: ["Cactus 10x"] });
 addRune("desert", { name: "BRINE", chance: 200000000000000, color: "green", buffs: ["Cactus 25x", "Sand 2x", "Rune Luck 4x"] });
 addRune("desert", { name: "RUST", chance: 10000000000000000, color: "brown", buffs: ["Cactus 5x", "Sand 5x", "Rune Luck 5x"] });
-addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow x [∞]"] });
-addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
+addRune("desert", { name: "SHARD", chance: 2e21, color: "yellow", buffs: ["Snow 32.83Kx [∞]"] });
+addRune("desert", { name: "GRIT", type: "Deity", chance: 5e15, luckOnChance: 51.85e15, color: "yellow", buffs: ["Fire 71.59x [∞]", "Rune Bulk 3x", "Tokens 50x"] });
 addRune("desert", { name: "SLAG", type: "Deity", chance: 5e24, luckOnChance: 51.85e24, color: "green", buffs: ["Fire 100x", "Magma 50x", "Rune Bulk 50x", "Rune Luck 10x"] });
+addRune("desert", { name: "PYRAMID", type: "Deity", chance: 1e36, luckOnChance: 10.37e36, color: "yellow", buffs: ["Points 1Mx", "Snow 100x", "Fire 1000x", "Magma 100x", "Rune Bulk 5x"] });
 
-// --- Magma Rune ---
+// --- MAGMA SET ---
 addRune("magma", { name: "PYRE", chance: 2, color: "yellow", buffs: ["Fire 3x"] });
 addRune("magma", { name: "VULKAN", chance: 100000000000000, color: "red", buffs: ["Fire 5x"] });
 addRune("magma", { name: "IGNIS", chance: 10000000000000000, color: "red", buffs: ["Fire 25x"] });
@@ -122,7 +120,7 @@ addRune("magma", { name: "ASH", chance: 1e21, color: "white", buffs: ["Fire 100x
 addRune("magma", { name: "BLAZE", chance: 1e25, color: "pink", buffs: ["Cactus 10x", "Fire 3x", "Rune Luck 10x"] });
 addRune("magma", { name: "MELT", chance: 1e29, color: "purple", buffs: ["Cactus 25x", "Fire 10x", "Magma 3x", "Rune Luck 5x"] });
 addRune("magma", { name: "FURNACE", type: "Deity", chance: 50e24, luckOnChance: 336.9e24, color: "orange", buffs: ["Cactus 1Kx", "Fire 100x", "Rune Bulk 100x"] });
-addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points x [∞]", "Rune Bulk 25x", "Tokens 100x"] });
+addRune("magma", { name: "INFERNO", type: "Deity", chance: 25e27, luckOnChance: 168.45e27, color: "pink", buffs: ["Points 1.54Kx [∞]", "Rune Bulk 25x", "Tokens 100x"] });
 
 
 // ============================================================================
@@ -260,10 +258,20 @@ function renderCategoryTabs() {
 
 function calculateAndRender() {
   const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
-  const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
-  const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
   const cloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
   const globalLuckToggle = getChecked('luckToggle', true);
+  const isAdvanced = getChecked('advancedToggle', false);
+
+  // Toggle field visibility depending on mode
+  const groupRps = document.getElementById('groupRps');
+  const groupSpeed = document.getElementById('groupSpeed');
+  const groupBulk = document.getElementById('groupBulk');
+
+  if (groupRps && groupSpeed && groupBulk) {
+    groupRps.style.display = isAdvanced ? 'none' : '';
+    groupSpeed.style.display = isAdvanced ? '' : 'none';
+    groupBulk.style.display = isAdvanced ? '' : 'none';
+  }
 
   const potServer = getChecked('potServer', false);
   const potLuck = getChecked('potLuck', true);
@@ -276,11 +284,24 @@ function calculateAndRender() {
   const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
 
   const finalLuck = rawLuck * luckMult;
-  const finalSpeed = rawSpeed * speedMult;
-  const finalBulk = rawBulk * bulkMult;
 
-  const baseRPS = rawBulk * rawSpeed;
-  const actualRPS = finalBulk * finalSpeed;
+  let baseRPS = 0;
+  let actualRPS = 0;
+
+  if (isAdvanced) {
+    const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
+    const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
+
+    const finalSpeed = rawSpeed * speedMult;
+    const finalBulk = rawBulk * bulkMult;
+
+    baseRPS = rawSpeed * rawBulk;
+    actualRPS = finalSpeed * finalBulk;
+  } else {
+    const rawRPS = parseFormattedNumber(getVal('rpsInput', '0'));
+    baseRPS = rawRPS;
+    actualRPS = rawRPS * speedMult * bulkMult;
+  }
 
   setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
   setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
@@ -359,10 +380,12 @@ function calculateAndRender() {
 function saveData() {
   const data = {
     luckInput: getVal('luckInput', '738.01Qn'),
+    rpsInput: getVal('rpsInput', '1.58Sp'),
     speedInput: getVal('speedInput', '139.1M'),
     bulkInput: getVal('bulkInput', '11.38Sp'),
     cloneInput: getVal('cloneInput', '8'),
     luckToggle: getChecked('luckToggle', true),
+    advancedToggle: getChecked('advancedToggle', false),
     potServer: getChecked('potServer', false),
     potLuck: getChecked('potLuck', true),
     potSpeed: getChecked('potSpeed', true),
@@ -382,10 +405,12 @@ function loadData() {
   try {
     const data = JSON.parse(raw);
     if (data.luckInput !== undefined) setVal('luckInput', data.luckInput);
+    if (data.rpsInput !== undefined) setVal('rpsInput', data.rpsInput);
     if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
     if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
     if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
     if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
+    if (data.advancedToggle !== undefined) setChecked('advancedToggle', data.advancedToggle);
     if (data.potServer !== undefined) setChecked('potServer', data.potServer);
     if (data.potLuck !== undefined) setChecked('potLuck', data.potLuck);
     if (data.potSpeed !== undefined) setChecked('potSpeed', data.potSpeed);
