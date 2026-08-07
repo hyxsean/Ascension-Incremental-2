@@ -25,7 +25,7 @@ const buffColorMap = {
   "plasma": "#c084fc",
   "shards": "#c084fc",
   "magma": "#fb923c",
-  "sand": "#fbbf24"
+  "sand": "#fbbf24",
   "snow": "#ffffff"
 };
 
