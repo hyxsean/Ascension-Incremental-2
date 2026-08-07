@@ -237,6 +237,8 @@ function calculateAndRender() {
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
   const groupBulk = document.getElementById('groupBulk');
+  const groupClone = document.getElementById('groupClone');
+  const groupLuck = document.getElementById('groupLuck');
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
