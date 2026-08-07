@@ -1,4 +1,3 @@
-javascript
 const STORAGE_KEY = 'ascension_ii_optimizer_data';
 let currentTab = 'basic';
 
