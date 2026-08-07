@@ -1,12 +1,4 @@
-Here is the updated **`script.js`** code.
-
-Helper functions and optional chaining (`?.`) have been added to all DOM interactions (`potServer`, `resetBtn`, etc.). Now, **even if certain elements are commented out or missing from `index.html`, the script will continue running without crashing**.
-
----
-
-### Replace your `script.js` with this code:
-
-```javascript
+javascript
 const STORAGE_KEY = 'ascension_ii_optimizer_data';
 let currentTab = 'basic';
 
