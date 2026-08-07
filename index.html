@@ -3,117 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Rune Calculator</title>
+  <title>Ascension II — Rune Optimizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <h1>AI Rune Calculator</h1>
-
-  <!-- Inputs Panel -->
-  <div class="calculator-panel">
-    <div class="panel-title">1. Player Stats</div>
-
-    <div class="inputs-grid">
-      <div class="input-group">
-        <label for="luckInput">Rune Luck</label>
-        <input type="text" id="luckInput" value="738.01Qn">
+  <header class="app-header">
+    <div class="header-content">
+      <div class="brand">
+        <span class="game-tag">ASCENSION II</span>
+        <h1>RUNE OPTIMIZER</h1>
       </div>
-      <div class="input-group">
-        <label for="speedInput">Rune Speed</label>
-        <input type="text" id="speedInput" value="139.1M">
-      </div>
-      <div class="input-group">
-        <label for="bulkInput">Rune Bulk</label>
-        <input type="text" id="bulkInput" value="11.38Sp">
-      </div>
-      <div class="input-group">
-        <label for="cloneInput">Rune Clone</label>
-        <input type="text" id="cloneInput" value="8">
-      </div>
-      <div class="input-group" style="justify-content: flex-end;">
-        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:#fff; font-weight:bold; height:38px;">
-          <input type="checkbox" id="luckToggle" checked style="width:18px; height:18px; cursor:pointer;">
-          Luck Enabled
-        </label>
-      </div>
+      <button id="resetBtn" class="reset-btn" title="Reset stats to default">Reset Defaults</button>
     </div>
+  </header>
 
-    <!-- Active Potions Panel -->
-    <div class="potions-section">
-      <div class="panel-title">2. Active Potions</div>
-      <div class="potions-grid">
-        <label class="potion-card">
-          <input type="checkbox" id="potServer">
-          <div class="potion-info">
-            <span class="potion-title">Server Potion</span>
-            <span class="potion-buff pot-server">Stats 1.25x</span>
+  <main class="container">
+    <!-- Controls Panel -->
+    <div class="calculator-panel">
+      
+      <!-- Section: Player Stats -->
+      <section class="panel-section">
+        <h2 class="section-title">Player Statistics</h2>
+        <div class="inputs-grid">
+          <div class="input-group">
+            <label for="luckInput">Rune Luck</label>
+            <input type="text" id="luckInput" value="738.01Qn">
           </div>
-        </label>
-        <label class="potion-card">
-          <input type="checkbox" id="potLuck" checked>
-          <div class="potion-info">
-            <span class="potion-title">Rune Luck Potion</span>
-            <span class="potion-buff pot-luck">Rune Luck 2x</span>
+          <div class="input-group">
+            <label for="speedInput">Rune Speed</label>
+            <input type="text" id="speedInput" value="139.1M">
           </div>
-        </label>
-        <label class="potion-card">
-          <input type="checkbox" id="potSpeed" checked>
-          <div class="potion-info">
-            <span class="potion-title">Rune Speed Potion</span>
-            <span class="potion-buff pot-speed">Rune Speed 2x</span>
+          <div class="input-group">
+            <label for="bulkInput">Rune Bulk</label>
+            <input type="text" id="bulkInput" value="11.38Sp">
           </div>
-        </label>
-        <label class="potion-card">
-          <input type="checkbox" id="potBulk" checked>
-          <div class="potion-info">
-            <span class="potion-title">Rune Bulk Potion</span>
-            <span class="potion-buff pot-bulk">Rune Bulk 2x</span>
+          <div class="input-group">
+            <label for="cloneInput">Rune Clone</label>
+            <input type="text" id="cloneInput" value="8">
           </div>
-        </label>
-      </div>
-    </div>
-
-    <!-- Grinding / Target Goal Calculator -->
-    <div class="grind-section">
-      <div class="panel-title">3. Currency Grinding / Time-to-Target</div>
-      <div class="inputs-grid">
-        <div class="input-group">
-          <label for="incomeInput">Income Rate (/sec)</label>
-          <input type="text" id="incomeInput" value="4.6T">
+          <div class="input-group toggle-group">
+            <label class="toggle-switch">
+              <input type="checkbox" id="luckToggle" checked>
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Luck Multiplier</span>
+            </label>
+          </div>
         </div>
-        <div class="input-group">
-          <label for="currentInput">Current Currency</label>
-          <input type="text" id="currentInput" value="900Qd">
+      </section>
+
+      <!-- Section: Active Potions -->
+      <section class="panel-section">
+        <h2 class="section-title">Active Boosts & Potions</h2>
+        <div class="potions-grid">
+          <label class="potion-card">
+            <input type="checkbox" id="potServer">
+            <div class="potion-content">
+              <span class="potion-title">Server Potion</span>
+              <span class="potion-buff pot-server">Stats +25%</span>
+            </div>
+          </label>
+          <label class="potion-card">
+            <input type="checkbox" id="potLuck" checked>
+            <div class="potion-content">
+              <span class="potion-title">Rune Luck Potion</span>
+              <span class="potion-buff pot-luck">Luck 2x</span>
+            </div>
+          </label>
+          <label class="potion-card">
+            <input type="checkbox" id="potSpeed" checked>
+            <div class="potion-content">
+              <span class="potion-title">Rune Speed Potion</span>
+              <span class="potion-buff pot-speed">Speed 2x</span>
+            </div>
+          </label>
+          <label class="potion-card">
+            <input type="checkbox" id="potBulk" checked>
+            <div class="potion-content">
+              <span class="potion-title">Rune Bulk Potion</span>
+              <span class="potion-buff pot-bulk">Bulk 2x</span>
+            </div>
+          </label>
         </div>
-        <div class="input-group">
-          <label for="targetInput">Target Goal</label>
-          <input type="text" id="targetInput" value="2Qn">
+      </section>
+
+      <!-- Section: Goal Calculator -->
+      <section class="panel-section">
+        <h2 class="section-title">Target Progression</h2>
+        <div class="inputs-grid">
+          <div class="input-group">
+            <label for="incomeInput">Income Rate (/sec)</label>
+            <input type="text" id="incomeInput" value="4.6T">
+          </div>
+          <div class="input-group">
+            <label for="currentInput">Current Balance</label>
+            <input type="text" id="currentInput" value="900Qd">
+          </div>
+          <div class="input-group">
+            <label for="targetInput">Goal Cost</label>
+            <input type="text" id="targetInput" value="2Qn">
+          </div>
         </div>
-      </div>
-      <div class="time-display-box">
-        Estimated Time Remaining: <span class="time-highlight" id="goalTimeDisplay">Calculating...</span>
+        <div class="time-display-box">
+          <span class="time-label">Time to Reach Target:</span>
+          <span class="time-highlight" id="goalTimeDisplay">Calculating...</span>
+        </div>
+      </section>
+
+      <!-- Output Banner -->
+      <div class="stats-summary">
+        <div class="summary-metric">
+          <span class="metric-label">Effective RPS</span>
+          <span class="metric-value value-actual" id="actualRpsDisplay">0</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Base RPS</span>
+          <span class="metric-value" id="baseRpsDisplay">0</span>
+        </div>
+        <div class="summary-metric">
+          <span class="metric-label">Effective Luck</span>
+          <span class="metric-value value-luck" id="luckDisplay">1x</span>
+        </div>
       </div>
     </div>
 
-    <!-- Output Summary -->
-    <div class="stats-summary">
-      <div>Calculated RPS: <span class="stat-highlight-actual" id="actualRpsDisplay">0</span></div>
-      <div>Base RPS: <span class="stat-highlight" id="baseRpsDisplay">0</span></div>
-      <div>Calculated Luck: <span class="stat-highlight" id="luckDisplay">1x</span></div>
-    </div>
-  </div>
+    <!-- Navigation Tabs -->
+    <nav class="tabs-container">
+      <button class="tab-btn active" data-tab="basic">Basic Set</button>
+      <button class="tab-btn" data-tab="cybernetic">Cybernetic / Tech</button>
+      <button class="tab-btn" data-tab="sand">Desert / Sand</button>
+      <button class="tab-btn" data-tab="fire">Fire / Volcanic</button>
+    </nav>
 
-  <!-- Navigation Tabs -->
-  <div class="tabs-container">
-    <button class="tab-btn active" data-tab="basic">Basic Set</button>
-    <button class="tab-btn" data-tab="cybernetic">Cybernetic / Tech Set</button>
-    <button class="tab-btn" data-tab="sand">Desert / Sand Set</button>
-    <button class="tab-btn" data-tab="fire">Fire / Volcanic Set</button>
-  </div>
-
-  <!-- Cards Grid -->
-  <div class="grid" id="runeGrid"></div>
+    <!-- Cards Grid -->
+    <div class="grid" id="runeGrid"></div>
+  </main>
 
   <script src="script.js"></script>
 </body>
