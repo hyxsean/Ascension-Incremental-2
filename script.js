@@ -1,12 +1,68 @@
-const STORAGE_KEY = 'ascension_ii_optimizer_data_v2';
+const STORAGE_KEY = 'ascension_ii_optimizer_data_v3';
 let currentTab = '';
 
 // ============================================================================
-// 1. REGISTRATION SYSTEM
+// 1. REGISTRATION SYSTEM & PROGRESSION STAGES
 // ============================================================================
 
 const runeCategories = {};
 const runeDatabase = {};
+const categoryStages = { basic: 0, essential: 0, desert: 0, magma: 0 };
+
+const progressionStages = {
+  basic: [
+    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 1, req: "2.50K Flux", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "10.00K Flux", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "50.00K Flux", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
+    { stage: 4, req: "1.00M Flux", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
+    { stage: 5, req: "250.00M Flux", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 }, // Clone +1 relative to base
+    { stage: 6, req: "10.00B Flux", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
+    { stage: 7, req: "500.00B Flux", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
+    { stage: 8, req: "25.00T Flux", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
+    { stage: 9, req: "1.50Qd Flux", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
+    { stage: 10, req: "100.00Qd Flux", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+  ],
+  essential: [
+    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 1, req: "2.50K Particles", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "100.00K Particles", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "50.00M Particles", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
+    { stage: 4, req: "250.00M Particles", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
+    { stage: 5, req: "2.50B Particles", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
+    { stage: 6, req: "100.00B Particles", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
+    { stage: 7, req: "5.00T Particles", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
+    { stage: 8, req: "250.00T Particles", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
+    { stage: 9, req: "15.00Qd Particles", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
+    { stage: 10, req: "1.00Qn Particles", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+  ],
+  desert: [
+    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 1, req: "100.00K Cactus", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "1.00Qn Cactus", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "10.00Qn Cactus", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
+    { stage: 4, req: "100.00Qn Cactus", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
+    { stage: 5, req: "1.00Sx Cactus", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
+    { stage: 6, req: "10.00Sx Cactus", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
+    { stage: 7, req: "100.00Sx Cactus", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
+    { stage: 8, req: "1.00Sp Cactus", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
+    { stage: 9, req: "10.00Sp Cactus", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
+    { stage: 10, req: "1.00Oc Cactus", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+  ],
+  magma: [
+    { stage: 0, req: "None", luck: 1.0, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 1, req: "100.00K Fire", luck: 1.25, bulk: 1.0, speed: 1.0, clone: 1.0 },
+    { stage: 2, req: "1.00Qn Fire", luck: 1.5, bulk: 1.25, speed: 1.0, clone: 1.0 },
+    { stage: 3, req: "10.00Qn Fire", luck: 2.0, bulk: 1.5, speed: 1.25, clone: 1.0 },
+    { stage: 4, req: "100.00Qn Fire", luck: 2.75, bulk: 2.0, speed: 1.75, clone: 1.0 },
+    { stage: 5, req: "1.00Sx Fire", luck: 3.75, bulk: 3.0, speed: 2.5, clone: 2.0 },
+    { stage: 6, req: "10.00Sx Fire", luck: 5.5, bulk: 4.5, speed: 3.0, clone: 3.0 },
+    { stage: 7, req: "100.00Sx Fire", luck: 8.0, bulk: 6.5, speed: 4.0, clone: 3.0 },
+    { stage: 8, req: "1.00Sp Fire", luck: 11.5, bulk: 9.0, speed: 5.5, clone: 4.0 },
+    { stage: 9, req: "10.00Sp Fire", luck: 15.5, bulk: 12.5, speed: 6.0, clone: 5.0 },
+    { stage: 10, req: "1.00Oc Fire", luck: 20.0, bulk: 17.5, speed: 8.0, clone: 6.0 }
+  ]
+};
 
 const buffColorMap = {
   "snow": "#38bdf8", "points": "#ffffff", "flux": "#fbbf24", "voltage": "#f87171",
@@ -221,18 +277,66 @@ function renderCategoryTabs() {
       document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
       currentTab = catId;
+      renderStageSelector();
       calculateAndRender();
     });
 
     container.appendChild(btn);
   });
+  
+  renderStageSelector();
+}
+
+function renderStageSelector() {
+  // Dynamically inject or update stage selector UI block for the active tab
+  let selectorWrapper = document.getElementById('stageSelectorWrapper');
+  if (!selectorWrapper) {
+    selectorWrapper = document.createElement('div');
+    selectorWrapper.id = 'stageSelectorWrapper';
+    selectorWrapper.className = 'stage-selector-card';
+    const tabsContainer = document.querySelector('.tabs-container');
+    if (tabsContainer && tabsContainer.parentNode) {
+      tabsContainer.parentNode.insertBefore(selectorWrapper, tabsContainer.nextSibling);
+    }
+  }
+
+  const stages = progressionStages[currentTab] || [];
+  const currentStageNum = categoryStages[currentTab] || 0;
+
+  let optionsHTML = '';
+  stages.forEach(function(st) {
+    optionsHTML += '<option value="' + st.stage + '" ' + (st.stage === currentStageNum ? 'selected' : '') + '>' +
+      (st.stage === 0 ? 'Stage 0 (None)' : 'Stage ' + st.stage + ' (Req: ' + st.req + ')') +
+      '</option>';
+  });
+
+  selectorWrapper.innerHTML = 
+    '<label for="lineStageSelect" style="font-size: 0.85rem; font-weight: bold; color: #cbd5e1; display: block; margin-bottom: 4px;">' +
+      runeCategories[currentTab] + ' Progression Stage:' +
+    '</label>' +
+    '<select id="lineStageSelect" style="width: 100%; padding: 6px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px;">' +
+      optionsHTML +
+    '</select>';
+
+  const selectEl = document.getElementById('lineStageSelect');
+  if (selectEl) {
+    selectEl.addEventListener('change', function(e) {
+      categoryStages[currentTab] = parseInt(e.target.value, 10) || 0;
+      calculateAndRender();
+    });
+  }
 }
 
 function calculateAndRender() {
   const rawLuck = parseFormattedNumber(getVal('luckInput', '0'));
-  const cloneVal = parseFormattedNumber(getVal('cloneInput', '1')); // <-- FIXED: Added cloneVal definition here
+  const baseCloneVal = parseFormattedNumber(getVal('cloneInput', '1'));
+  const targetRuneCount = Math.max(1, parseFormattedNumber(getVal('targetRuneInput', '1')));
   const globalLuckToggle = getChecked('luckToggle', true);
   const isAdvanced = getChecked('advancedToggle', false);
+
+  // Get active progression stage boosts
+  const activeStageIdx = categoryStages[currentTab] || 0;
+  const stageStats = (progressionStages[currentTab] && progressionStages[currentTab][activeStageIdx]) || { luck: 1, bulk: 1, speed: 1, clone: 1 };
 
   const groupRps = document.getElementById('groupRps');
   const groupSpeed = document.getElementById('groupSpeed');
@@ -242,7 +346,6 @@ function calculateAndRender() {
   const potionsSection = document.getElementById('potionsSection');
   const baseRpsMetric = document.getElementById('baseRpsMetric');
 
-  // Toggle Basic vs Advanced Visibility
   if (groupRps) groupRps.style.display = isAdvanced ? 'none' : 'flex';
   if (groupLuck) groupLuck.style.display = isAdvanced ? 'flex' : 'none';
   if (groupSpeed) groupSpeed.style.display = isAdvanced ? 'flex' : 'none';
@@ -254,6 +357,7 @@ function calculateAndRender() {
   let baseRPS = 0;
   let actualRPS = 0;
   let finalLuck = rawLuck;
+  let cloneVal = baseCloneVal * stageStats.clone;
 
   if (isAdvanced) {
     const potServer = getChecked('potServer', false);
@@ -266,29 +370,28 @@ function calculateAndRender() {
     const speedMult = (potSpeed ? 2.0 : 1.0) * serverMult;
     const bulkMult = (potBulk ? 2.0 : 1.0) * serverMult;
 
-    finalLuck = rawLuck * luckMult;
+    // Apply potion multipliers + stage multipliers
+    finalLuck = rawLuck * luckMult * stageStats.luck;
 
     const rawSpeed = parseFormattedNumber(getVal('speedInput', '0'));
     const rawBulk = parseFormattedNumber(getVal('bulkInput', '0'));
 
     baseRPS = rawSpeed * rawBulk;
-    actualRPS = (rawSpeed * speedMult) * (rawBulk * bulkMult);
+    actualRPS = (rawSpeed * speedMult * stageStats.speed) * (rawBulk * bulkMult * stageStats.bulk);
   } else {
-    // Basic Mode: Single Current Rate input
     actualRPS = parseFormattedNumber(getVal('rpsInput', '2000'));
     baseRPS = actualRPS;
-    finalLuck = rawLuck;
+    finalLuck = rawLuck * stageStats.luck;
+    actualRPS = actualRPS * stageStats.speed * stageStats.bulk;
 
-    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS');
+    setText('parsedRateDisplay', 'Parsed Rate: ' + formatNumber(actualRPS) + ' RPS (Stage Boosted)');
   }
 
   setText('actualRpsDisplay', formatNumber(actualRPS) + " RPS");
   setText('baseRpsDisplay', formatNumber(baseRPS) + " RPS");
   setText('luckDisplay', globalLuckToggle ? formatNumber(finalLuck) + "x" : "Off");
 
-  // Read strictly from the Income Rate input field for currency progression
   const incomePerSec = parseFormattedNumber(getVal('incomeInput', '0'));
-
   const currentVal = parseFormattedNumber(getVal('currentInput', '0'));
   const targetVal = parseFormattedNumber(getVal('targetInput', '0'));
 
@@ -319,7 +422,9 @@ function calculateAndRender() {
 
     const dropProbability = 1 / Math.max(1, effectiveChance);
     const estimatedYieldPerSec = actualRPS * dropProbability * Math.max(1, cloneVal);
-    const secondsForOne = estimatedYieldPerSec > 0 ? (1 / estimatedYieldPerSec) : Infinity;
+    
+    // Time to X Runes calculation
+    const secondsForTarget = estimatedYieldPerSec > 0 ? (targetRuneCount / estimatedYieldPerSec) : Infinity;
 
     const card = document.createElement('div');
     card.className = "rune-card " + rune.colorClass;
@@ -340,7 +445,7 @@ function calculateAndRender() {
       '<div>' +
         '<div class="rune-title">' + rune.name + '</div>' +
         '<div class="rune-category">[' + rune.type + ']</div>' +
-        '<div class="time-badge">Est. Time: ' + formatTime(secondsForOne) + '</div>' +
+        '<div class="time-badge">Est. Time (' + targetRuneCount + 'x): ' + formatTime(secondsForTarget) + '</div>' +
         '<div class="buffs-container">' + buffsHTML + '</div>' +
       '</div>' +
       '<div>' +
@@ -361,6 +466,7 @@ function saveData() {
     speedInput: getVal('speedInput', ''),
     bulkInput: getVal('bulkInput', ''),
     cloneInput: getVal('cloneInput', ''),
+    targetRuneInput: getVal('targetRuneInput', '1'),
     luckToggle: getChecked('luckToggle', true),
     advancedToggle: getChecked('advancedToggle', false),
     potServer: getChecked('potServer', false),
@@ -370,7 +476,8 @@ function saveData() {
     incomeInput: getVal('incomeInput', ''),
     currentInput: getVal('currentInput', ''),
     targetInput: getVal('targetInput', ''),
-    currentTab: currentTab
+    currentTab: currentTab,
+    categoryStages: categoryStages
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
@@ -386,6 +493,7 @@ function loadData() {
     if (data.speedInput !== undefined) setVal('speedInput', data.speedInput);
     if (data.bulkInput !== undefined) setVal('bulkInput', data.bulkInput);
     if (data.cloneInput !== undefined) setVal('cloneInput', data.cloneInput);
+    if (data.targetRuneInput !== undefined) setVal('targetRuneInput', data.targetRuneInput);
     if (data.luckToggle !== undefined) setChecked('luckToggle', data.luckToggle);
     if (data.advancedToggle !== undefined) setChecked('advancedToggle', data.advancedToggle);
     if (data.potServer !== undefined) setChecked('potServer', data.potServer);
@@ -395,6 +503,10 @@ function loadData() {
     if (data.incomeInput !== undefined) setVal('incomeInput', data.incomeInput);
     if (data.currentInput !== undefined) setVal('currentInput', data.currentInput);
     if (data.targetInput !== undefined) setVal('targetInput', data.targetInput);
+
+    if (data.categoryStages) {
+      Object.assign(categoryStages, data.categoryStages);
+    }
 
     if (data.currentTab && runeDatabase[data.currentTab]) {
       currentTab = data.currentTab;
@@ -406,9 +518,23 @@ function loadData() {
 
 document.addEventListener('DOMContentLoaded', function() {
   loadData();
+  
+  // Inject target rune quantity field into the DOM if it exists or create a control panel section
+  const controlsPanel = document.querySelector('.controls-panel') || document.body;
+  if (!document.getElementById('targetRuneGroup')) {
+    const targetGroup = document.createElement('div');
+    targetGroup.id = 'targetRuneGroup';
+    targetGroup.className = 'control-group';
+    targetGroup.style.marginTop = '10px';
+    targetGroup.innerHTML = 
+      '<label for="targetRuneInput">Target Rune Quantity (X):</label>' +
+      '<input type="number" id="targetRuneInput" value="1" min="1" style="width: 100%; padding: 6px; background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px;">';
+    controlsPanel.appendChild(targetGroup);
+  }
+
   renderCategoryTabs();
 
-  document.querySelectorAll('input').forEach(function(input) {
+  document.querySelectorAll('input, select').forEach(function(input) {
     input.addEventListener('input', calculateAndRender);
     input.addEventListener('change', calculateAndRender);
   });
